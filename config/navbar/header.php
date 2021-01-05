@@ -2,51 +2,40 @@
 /**
  * Supply the basis for the navbar as an array.
  */
-return [
+
+$navbar = [
     // Use for styling the menu
     "wrapper" => null,
     "class" => "my-navbar rm-default rm-desktop",
- 
+
     // Here comes the menu items
     "items" => [
         [
-            "text" => "Hem",
-            "url" => "",
-            "title" => "Första sidan, börja här.",
+            "text" => "Questions",
+            "url" => "question",
+            "title" => "Questions.",
         ],
         [
-            "text" => "Redovisning",
-            "url" => "redovisning",
-            "title" => "Redovisningstexter från kursmomenten.",
-            "submenu" => [
-                "items" => [
-                    [
-                        "text" => "Kmom01",
-                        "url" => "redovisning/kmom01",
-                        "title" => "Redovisning för kmom01.",
-                    ],
-                    [
-                        "text" => "Kmom02",
-                        "url" => "redovisning/kmom02",
-                        "title" => "Redovisning för kmom02.",
-                    ],
-                ],
-            ],
+            "text" => "QuestionComment",
+            "url" => "question-comment",
+            "title" => "QuestionComment.",
         ],
         [
-            "text" => "Om",
-            "url" => "om",
-            "title" => "Om denna webbplats.",
+            "text" => "Answer",
+            "url" => "answer",
+            "title" => "Answer.",
         ],
         [
-            "text" => "Styleväljare",
-            "url" => "style",
-            "title" => "Välj stylesheet.",
+            "text" => "AnswerComment",
+            "url" => "answer-comment",
+            "title" => "AnswerComment.",
         ],
         [
-            "text" => "Verktyg",
-            "url" => "verktyg",
-            "title" => "Verktyg och möjligheter för utveckling.",
+            "text" => "User",
+            "url" => "user",
+            "title" => "User.",
         ],
     ],
 ];
+
+return $navbar;

@@ -18,7 +18,7 @@ return [
             "htmlClass" => null,
             "lang" => "sv",
             "stylesheets" => [
-                "css/dbwebb-se.min.css",
+                "css/oljo.min.css",
             ],
             "javascripts" => [
                 "js/responsive-menu.js",
@@ -46,6 +46,10 @@ return [
                 "siteLogoTextIcon" => "image/theme/leaf_40x40.png",
                 "siteLogoTextIconAlt" => "Löv-bild",
             ],
+        ],
+        [
+            "region" => "header-col-2",
+            "template" => "header/message",
         ],
         [
             "region" => "header-col-2",

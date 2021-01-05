@@ -25,12 +25,12 @@ class CreateForm extends FormModel
                 "legend" => "Details of the item",
             ],
             [
-                "column1" => [
+                "uid" => [
                     "type" => "text",
                     "validation" => ["not_empty"],
                 ],
-                        
-                "column2" => [
+
+                "text" => [
                     "type" => "text",
                     "validation" => ["not_empty"],
                 ],
@@ -56,9 +56,10 @@ class CreateForm extends FormModel
     {
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
-        $question->column1  = $this->form->value("column1");
-        $question->column2 = $this->form->value("column2");
+        $question->uid  = $this->form->value("uid");
+        $question->text = $this->form->value("text");
         $question->save();
+
         return true;
     }
 

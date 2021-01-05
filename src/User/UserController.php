@@ -54,8 +54,14 @@ class UserController implements ContainerInjectableInterface
     {
         $page = $this->di->get("page");
 
+        $content = <<<EOD
+<h1>User</h1>
+<a href="user/login">Login</a> |
+<a href="user/create">Create</a>
+EOD;
+
         $page->add("anax/v2/article/default", [
-            "content" => "An index page",
+            "content" => $content,
         ]);
 
         return $page->render([
@@ -113,5 +119,27 @@ class UserController implements ContainerInjectableInterface
         return $page->render([
             "title" => "A create user page",
         ]);
+    }
+
+
+    /**
+     * Adding an optional catchAll() method will catch all actions sent to the
+     * router. You can then reply with an actual response or return void to
+     * allow for the router to move on to next handler.
+     * A catchAll() handles the following, if a specific action method is not
+     * created:
+     * ANY METHOD mountpoint/**
+     *
+     * @param array $args as a variadic parameter.
+     *
+     * @return mixed
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function catchAll(...$args)
+    {
+        // Deal with the request and send an actual response, or not.
+        //return __METHOD__ . ", \$db is {$this->db}, got '" . count($args) . "' arguments: " . implode(", ", $args);
+        return;
     }
 }

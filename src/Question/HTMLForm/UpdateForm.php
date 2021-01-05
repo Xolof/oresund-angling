@@ -34,16 +34,16 @@ class UpdateForm extends FormModel
                     "value" => $question->id,
                 ],
 
-                "column1" => [
+                "uid" => [
                     "type" => "text",
                     "validation" => ["not_empty"],
-                    "value" => $question->column1,
+                    "value" => $question->uid,
                 ],
 
-                "column2" => [
+                "text" => [
                     "type" => "text",
                     "validation" => ["not_empty"],
-                    "value" => $question->column2,
+                    "value" => $question->text,
                 ],
 
                 "submit" => [
@@ -65,7 +65,7 @@ class UpdateForm extends FormModel
      * Get details on item to load form with.
      *
      * @param integer $id get details on item with id.
-     * 
+     *
      * @return Question
      */
     public function getItemDetails($id) : object
@@ -89,8 +89,8 @@ class UpdateForm extends FormModel
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
         $question->find("id", $this->form->value("id"));
-        $question->column1 = $this->form->value("column1");
-        $question->column2 = $this->form->value("column2");
+        $question->uid  = $this->form->value("uid");
+        $question->text = $this->form->value("text");
         $question->save();
         return true;
     }

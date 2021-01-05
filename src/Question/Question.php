@@ -22,6 +22,7 @@ class Question extends ActiveRecordModel
      * @var integer $id primary key auto incremented.
      */
     public $id;
-    public $column1;
-    public $column2;
+    public $uid;
+    public $time;
+    public $text;
 }

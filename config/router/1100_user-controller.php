@@ -5,9 +5,9 @@
 return [
     "routes" => [
         [
-            "info" => "User controller.",
-            "mount" => "user",
-            "handler" => "\Xolof\User\UserController",
+            "info" => "Log-out controller.",
+            "mount" => "logout",
+            "handler" => "\Xolof\Controller\LogoutController",
         ],
     ]
 ];

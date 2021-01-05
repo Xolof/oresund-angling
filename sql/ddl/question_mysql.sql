@@ -10,8 +10,8 @@
 -- Create a database for test
 --
 -- DROP DATABASE anaxdb;
--- CREATE DATABASE IF NOT EXISTS anaxdb;
-USE anaxdb;
+CREATE DATABASE IF NOT EXISTS qadb;
+USE qadb;
 
 
 
@@ -23,7 +23,7 @@ USE anaxdb;
 
 
 -- Ensure UTF8 on the database connection
-SET NAMES utf8;
+SET NAMES utf8mb4;
 
 
 
@@ -33,6 +33,7 @@ SET NAMES utf8;
 DROP TABLE IF EXISTS Question;
 CREATE TABLE Question (
     `id` INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    `column1` VARCHAR(256) NOT NULL,
-    `column2` VARCHAR(256) NOT NULL
-) ENGINE INNODB CHARACTER SET utf8 COLLATE utf8_swedish_ci;
+    `uid` INTEGER NOT NULL,
+    `time` TIMESTAMP DEFAULT NOW() NOT NULL,
+    `text` VARCHAR(255) NOT NULL
+) ENGINE INNODB CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;

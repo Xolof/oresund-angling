@@ -18,10 +18,10 @@ $urlToDelete = url("question/delete");
 
 
 
-?><h1>View all items</h1>
+?><h1>View all questions</h1>
 
 <p>
-    <a href="<?= $urlToCreate ?>">Create</a> | 
+    <a href="<?= $urlToCreate ?>">Create</a> |
     <a href="<?= $urlToDelete ?>">Delete</a>
 </p>
 
@@ -35,16 +35,18 @@ endif;
 <table>
     <tr>
         <th>Id</th>
-        <th>Column1</th>
-        <th>Column2</th>
+        <th>uid</th>
+        <th>time</th>
+        <th>text</th>
     </tr>
     <?php foreach ($items as $item) : ?>
     <tr>
         <td>
             <a href="<?= url("question/update/{$item->id}"); ?>"><?= $item->id ?></a>
         </td>
-        <td><?= $item->column1 ?></td>
-        <td><?= $item->column2 ?></td>
+        <td><?= $item->uid ?></td>
+        <td><?= $item->time ?></td>
+        <td><?= $item->text ?></td>
     </tr>
     <?php endforeach; ?>
 </table>

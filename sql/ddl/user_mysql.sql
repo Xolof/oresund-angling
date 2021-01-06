@@ -32,6 +32,7 @@ CREATE TABLE User (
     `acronym` VARCHAR(80) UNIQUE NOT NULL,
     `password` VARCHAR(255) NOT NULL,
     `time` TIMESTAMP DEFAULT NOW() NOT NULL
+    -- `created` DATETIME DEFAULT NOW() NOT NULL,
     -- `updated` DATETIME,
     -- `deleted` DATETIME,
     -- `active` DATETIME

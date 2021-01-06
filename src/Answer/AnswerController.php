@@ -8,6 +8,7 @@ use Xolof\Answer\HTMLForm\CreateForm;
 use Xolof\Answer\HTMLForm\EditForm;
 use Xolof\Answer\HTMLForm\DeleteForm;
 use Xolof\Answer\HTMLForm\UpdateForm;
+use Xolof\Question\Question;
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
@@ -70,10 +71,27 @@ class AnswerController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function createAction() : object
+    public function createAction($qid) : object
     {
+        if (!$this->di->session->get("user_id")) {
+            return $this->di->response->redirect("user");
+        };
+
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+        $questions = $question->findAllWhere("id = ?", $qid);
+
         $page = $this->di->get("page");
-        $form = new CreateForm($this->di);
+
+        if (!$questions) {
+            $page->add("default/404");
+
+            return $page->render([
+                "title" => "404 - not found",
+            ]);
+        }
+
+        $form = new CreateForm($this->di, $qid);
         $form->check();
 
         $page->add("answer/crud/create", [

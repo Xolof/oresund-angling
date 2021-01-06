@@ -16,8 +16,9 @@ class CreateForm extends FormModel
      *
      * @param Psr\Container\ContainerInterface $di a service container
      */
-    public function __construct(ContainerInterface $di)
+    public function __construct(ContainerInterface $di, $qid)
     {
+        $this->qid = $qid;
         parent::__construct($di);
         $this->form->create(
             [
@@ -25,16 +26,6 @@ class CreateForm extends FormModel
                 "legend" => "Details of the item",
             ],
             [
-                "qid" => [
-                    "type" => "number",
-                    "validation" => ["not_empty"],
-                ],
-
-                "uid" => [
-                    "type" => "number",
-                    "validation" => ["not_empty"],
-                ],
-
                 "text" => [
                     "type" => "text",
                     "validation" => ["not_empty"],
@@ -59,10 +50,14 @@ class CreateForm extends FormModel
      */
     public function callbackSubmit() : bool
     {
+        if (!$this->di->session->get("user_id")) {
+            return false;
+        };
+
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
-        $answer->qid  = $this->form->value("qid");
-        $answer->uid = $this->form->value("uid");
+        $answer->qid  = $this->qid;
+        $answer->uid = $this->di->session->get("user_id");
         $answer->text = $this->form->value("text");
         $answer->save();
 
@@ -78,7 +73,7 @@ class CreateForm extends FormModel
      */
     public function callbackSuccess()
     {
-        $this->di->get("response")->redirect("answer")->send();
+        $this->di->get("response")->redirect("question/show/$this->qid")->send();
     }
 
 

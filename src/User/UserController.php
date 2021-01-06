@@ -58,6 +58,7 @@ class UserController implements ContainerInjectableInterface
 <h1>User</h1>
 <a href="user/login">Login</a> |
 <a href="user/create">Create</a>
+<p>Create an account or login to be able to add questions, answer questions and make comments.</p>
 EOD;
 
         $page->add("anax/v2/article/default", [

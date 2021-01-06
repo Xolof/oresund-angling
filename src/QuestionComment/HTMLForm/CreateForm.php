@@ -5,6 +5,7 @@ namespace Xolof\QuestionComment\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Xolof\QuestionComment\QuestionComment;
+use Xolof\Question\Question;
 
 /**
  * Form to create an item.
@@ -16,8 +17,9 @@ class CreateForm extends FormModel
      *
      * @param Psr\Container\ContainerInterface $di a service container
      */
-    public function __construct(ContainerInterface $di)
+    public function __construct(ContainerInterface $di, $qid)
     {
+        $this->qid = $qid;
         parent::__construct($di);
         $this->form->create(
             [
@@ -25,16 +27,6 @@ class CreateForm extends FormModel
                 "legend" => "Details of the item",
             ],
             [
-                "qid" => [
-                    "type" => "number",
-                    "validation" => ["not_empty"],
-                ],
-
-                "uid" => [
-                    "type" => "number",
-                    "validation" => ["not_empty"],
-                ],
-
                 "text" => [
                     "type" => "text",
                     "validation" => ["not_empty"],
@@ -59,10 +51,23 @@ class CreateForm extends FormModel
      */
     public function callbackSubmit() : bool
     {
+        if (!$this->di->session->get("user_id")) {
+            return false;
+        };
+
         $questionComment = new QuestionComment();
         $questionComment->setDb($this->di->get("dbqb"));
-        $questionComment->qid  = $this->form->value("qid");
-        $questionComment->uid = $this->form->value("uid");
+
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+        $questions = $question->findAllWhere("id = ?", $this->qid);
+
+        if (!$questions) {
+            return false;
+        }
+
+        $questionComment->qid  = $this->qid;
+        $questionComment->uid = $this->di->session->get("user_id");
         $questionComment->text = $this->form->value("text");
         $questionComment->save();
 
@@ -78,7 +83,7 @@ class CreateForm extends FormModel
      */
     public function callbackSuccess()
     {
-        $this->di->get("response")->redirect("question-comment")->send();
+        $this->di->get("response")->redirect("question/show/$this->qid")->send();
     }
 
 

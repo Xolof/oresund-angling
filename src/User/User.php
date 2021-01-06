@@ -21,10 +21,10 @@ class User extends ActiveRecordModel
     public $id;
     public $acronym;
     public $password;
-    public $created;
-    public $updated;
-    public $deleted;
-    public $active;
+    // public $created;
+    // public $updated;
+    // public $deleted;
+    // public $active;
 
     /**
      * Set the password.

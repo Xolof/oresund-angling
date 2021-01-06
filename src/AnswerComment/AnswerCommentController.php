@@ -70,10 +70,14 @@ class AnswerCommentController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function createAction() : object
+    public function createAction($aid) : object
     {
+        if (!$this->di->session->get("user_id")) {
+            return $this->di->response->redirect("user");
+        };
+
         $page = $this->di->get("page");
-        $form = new CreateForm($this->di);
+        $form = new CreateForm($this->di, $aid);
         $form->check();
 
         $page->add("answerComment/crud/create", [

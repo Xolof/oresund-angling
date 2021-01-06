@@ -42,7 +42,7 @@ endif;
     <?php foreach ($items as $item) : ?>
     <tr>
         <td>
-            <a href="<?= url("question/update/{$item->id}"); ?>"><?= $item->id ?></a>
+            <a href="<?= url("question/show/{$item->id}"); ?>"><?= $item->id ?></a>
         </td>
         <td><?= $item->uid ?></td>
         <td><?= $item->time ?></td>

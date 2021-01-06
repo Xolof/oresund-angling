@@ -31,7 +31,7 @@ class QuestionController implements ContainerInjectableInterface
     //private $data;
 
 
-
+    //
     // /**
     //  * The initialize method is optional and will always be called before the
     //  * target method/action. This is a convienient method where you could
@@ -86,10 +86,6 @@ class QuestionController implements ContainerInjectableInterface
             $aComments["answer $item->id"] = $answerComment->findAllWhere("aid = ?", $item->id);
         }
 
-
-        $qCommentForm = new \Xolof\QuestionComment\HTMLForm\CreateForm($this->di);
-        $qCommentForm->check();
-
         if (!$q->id) {
             $page->add("default/404");
 
@@ -103,7 +99,6 @@ class QuestionController implements ContainerInjectableInterface
                 "qComments" => $qComments,
                 "answers" => $answers,
                 "aComments" => $aComments,
-                "qCommentForm" => $qCommentForm->getHTML(),
             ]
         ]);
 
@@ -141,6 +136,11 @@ class QuestionController implements ContainerInjectableInterface
     public function createAction() : object
     {
         $page = $this->di->get("page");
+
+        if (!$this->di->session->get("user_id")) {
+            return $this->di->response->redirect("user");
+        };
+
         $form = new CreateForm($this->di);
         $form->check();
 

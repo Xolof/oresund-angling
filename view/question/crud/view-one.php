@@ -13,7 +13,6 @@ $question = $data["question"];
 $qComments = $data["qComments"];
 $answers = $data["answers"];
 $aComments = $data["aComments"];
-$qCommentForm = $data["qCommentForm"]
 ?>
 
 <div class="question">
@@ -21,7 +20,7 @@ $qCommentForm = $data["qCommentForm"]
     <h2>Question <?= $question->id ?></h2>
     <p><?= $question->text ?></p>
     <p><a href="#">user <?= $question->uid ?></a> <span class="time"><?= $question->time ?></span></p>
-    <p><a href="<?= url('answer/create') ?>" class="answer-comment-link">Add an answer</a></p>
+    <p><a href="<?= url("answer/create/$question->id") ?>" class="answer-comment-link">Add an answer</a></p>
 </div>
 
 <div class="qComments">
@@ -31,7 +30,7 @@ $qCommentForm = $data["qCommentForm"]
             <p><a href="#">user <?= $qComment->uid ?></a> <span class="time"><?= $qComment->time ?></span></p>
         </div>
     <?php endforeach ?>
-    <p><a href="<?= url('question-comment/create') ?>" class="answer-comment-link">Add a comment</a></p>
+    <p><a href="<?= url("question-comment/create/$question->id") ?>" class="answer-comment-link">Add a comment</a></p>
 </div>
 
 <?php foreach($answers as $answer): ?>
@@ -47,6 +46,6 @@ $qCommentForm = $data["qCommentForm"]
                 <p><a href="#">user <?= $aComment->uid ?></a> <span class="time"><?= $aComment->time ?></span></p>
             </div>
         <?php endforeach ?>
-        <p><a href="<?= url('answer-comment/create') ?>" class="answer-comment-link">Add a comment</a></p>
+        <p><a href="<?= url("answer-comment/create/$answer->id") ?>" class="answer-comment-link">Add a comment</a></p>
     </div>
 <?php endforeach ?>

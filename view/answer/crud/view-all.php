@@ -45,10 +45,10 @@ endif;
         <td>
             <a href="<?= url("answer/update/{$item->id}"); ?>"><?= $item->id ?></a>
         </td>
-        <td><?= $item->uid ?></td>
-        <td><?= $item->qid ?></td>
-        <td><?= $item->time ?></td>
-        <td><?= $item->text ?></td>
+        <td><?= htmlentities($item->uid) ?></td>
+        <td><?= htmlentities($item->qid) ?></td>
+        <td><?= htmlentities($item->time) ?></td>
+        <td><?= htmlentities($item->text) ?></td>
     </tr>
     <?php endforeach; ?>
 </table>

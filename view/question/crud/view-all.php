@@ -44,9 +44,9 @@ endif;
         <td>
             <a href="<?= url("question/show/{$item->id}"); ?>"><?= $item->id ?></a>
         </td>
-        <td><?= $item->uid ?></td>
-        <td><?= $item->time ?></td>
-        <td><?= $item->text ?></td>
+        <td><?= htmlentities($item->uid) ?></td>
+        <td><?= htmlentities($item->time) ?></td>
+        <td><?= htmlentities($item->text) ?></td>
     </tr>
     <?php endforeach; ?>
 </table>

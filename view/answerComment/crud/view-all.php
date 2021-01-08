@@ -44,9 +44,9 @@ endif;
         <td>
             <a href="<?= url("answer-comment/update/{$item->id}"); ?>"><?= $item->id ?></a>
         </td>
-        <td><?= $item->aid ?></td>
-        <td><?= $item->uid ?></td>
-        <td><?= $item->text ?></td>
+        <td><?= htmlentities($item->aid) ?></td>
+        <td><?= htmlentities($item->uid) ?></td>
+        <td><?= htmlentities($item->text) ?></td>
     </tr>
     <?php endforeach; ?>
 </table>

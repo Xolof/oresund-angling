@@ -107,6 +107,33 @@ class QuestionController implements ContainerInjectableInterface
         ]);
     }
 
+    // /**
+    //  * Try if åäö is saved correctly to db if anax/htmlform is not used.
+    //  *
+    //  * @return object as a response object
+    //  */
+    // public function nonengcharsActionGet() : object
+    // {
+    //     $page = $this->di->get("page");
+    //     $question = new Question();
+    //     $question->setDb($this->di->get("dbqb"));
+    //
+    //     $question->uid  = "2";
+    //     $question->text = "Räksmörgås";
+    //     $question->save();
+    //
+    //     var_dump(json_encode($question->text));
+    //
+    //     $page->add("question/crud/view-all", [
+    //         "items" => $question->findAll(),
+    //     ]);
+    //
+    //     return $page->render([
+    //         "title" => "A collection of items",
+    //     ]);
+    // }
+
+
     /**
      * Show all items.
      *

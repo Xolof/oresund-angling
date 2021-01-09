@@ -68,7 +68,7 @@ class CreateForm extends FormModel
 
         $questionComment->qid  = $this->qid;
         $questionComment->uid = $this->di->session->get("user_id");
-        $questionComment->text = $this->form->value("text");
+        $questionComment->text = $this->form->rawValue("text");
         $questionComment->save();
 
         return true;

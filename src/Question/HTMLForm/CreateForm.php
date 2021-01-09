@@ -21,6 +21,7 @@ class CreateForm extends FormModel
         $this->id = null;
         parent::__construct($di);
         $this->form->create(
+
             [
                 "id" => __CLASS__,
                 "legend" => "Details of the item",
@@ -54,13 +55,15 @@ class CreateForm extends FormModel
             return false;
         };
 
+
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
         $question->uid  = $this->di->session->get("user_id");
-        $question->text = $this->form->value("text");
+        $question->text = $this->form->rawValue("text");
         $question->save();
 
         $this->id = $question->id;
+
         return true;
     }
 

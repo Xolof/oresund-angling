@@ -22,8 +22,7 @@ use Xolof\AnswerComment\AnswerComment;
 class QuestionController implements ContainerInjectableInterface
 {
     use ContainerInjectableTrait;
-
-
+    use \Xolof\Item\Item;
 
     /**
      * @var $data description
@@ -107,32 +106,6 @@ class QuestionController implements ContainerInjectableInterface
         ]);
     }
 
-    // /**
-    //  * Try if åäö is saved correctly to db if anax/htmlform is not used.
-    //  *
-    //  * @return object as a response object
-    //  */
-    // public function nonengcharsActionGet() : object
-    // {
-    //     $page = $this->di->get("page");
-    //     $question = new Question();
-    //     $question->setDb($this->di->get("dbqb"));
-    //
-    //     $question->uid  = "2";
-    //     $question->text = "Räksmörgås";
-    //     $question->save();
-    //
-    //     var_dump(json_encode($question->text));
-    //
-    //     $page->add("question/crud/view-all", [
-    //         "items" => $question->findAll(),
-    //     ]);
-    //
-    //     return $page->render([
-    //         "title" => "A collection of items",
-    //     ]);
-    // }
-
 
     /**
      * Show all items.
@@ -187,10 +160,23 @@ class QuestionController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function deleteAction() : object
+    public function deleteAction($id) : object
     {
+        // Check if the item with $id belongs to the user with $uid.
+        $uid = $this->di->session->get("user_id");
+
+        if (!$this->isUsersItem(new Question(), $id, $uid)) {
+            $page = $this->di->get("page");
+
+            $page->add("default/403");
+
+            return $page->render([
+                "title" => "403 Forbidden",
+            ]);
+        };
+
         $page = $this->di->get("page");
-        $form = new DeleteForm($this->di);
+        $form = new DeleteForm($this->di, $id);
         $form->check();
 
         $page->add("question/crud/delete", [
@@ -213,6 +199,19 @@ class QuestionController implements ContainerInjectableInterface
      */
     public function updateAction(int $id) : object
     {
+        // Check if the item with $id belongs to the user with $uid.
+        $uid = $this->di->session->get("user_id");
+
+        if (!$this->isUsersItem(new Question(), $id, $uid)) {
+            $page = $this->di->get("page");
+
+            $page->add("default/403");
+
+            return $page->render([
+                "title" => "403 Forbidden",
+            ]);
+        };
+
         $page = $this->di->get("page");
         $form = new UpdateForm($this->di, $id);
         $form->check();

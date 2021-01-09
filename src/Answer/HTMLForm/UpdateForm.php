@@ -11,6 +11,8 @@ use Xolof\Answer\Answer;
  */
 class UpdateForm extends FormModel
 {
+    use \Xolof\Item\Item;
+
     /**
      * Constructor injects with DI container and the id to update.
      *
@@ -20,6 +22,7 @@ class UpdateForm extends FormModel
     public function __construct(ContainerInterface $di, $id)
     {
         parent::__construct($di);
+        $this->itemId = $id;
         $answer = $this->getItemDetails($id);
         $this->form->create(
             [
@@ -94,10 +97,17 @@ class UpdateForm extends FormModel
      */
     public function callbackSubmit() : bool
     {
+        // Check if the item with $id belongs to the user with $uid.
+        $uid = $this->di->session->get("user_id");
+
+        if (!$this->isUsersItem(new Answer(), $this->itemId, $uid)) {
+            return false;
+        };
+
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
-        $answer->find("id", $this->form->value("id"));
-        $answer->text = $this->form->value("text");
+        $answer->find("id", $this->form->rawValue("id"));
+        $answer->text = $this->form->rawValue("text");
         $answer->save();
         return true;
     }

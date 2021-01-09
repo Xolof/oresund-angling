@@ -11,13 +11,16 @@ use Xolof\QuestionComment\QuestionComment;
  */
 class DeleteForm extends FormModel
 {
+    use \Xolof\Item\Item;
+
     /**
      * Constructor injects with DI container.
      *
      * @param Psr\Container\ContainerInterface $di a service container
      */
-    public function __construct(ContainerInterface $di)
+    public function __construct(ContainerInterface $di, $id)
     {
+        $this->itemId = $id;
         parent::__construct($di);
         $this->form->create(
             [
@@ -25,10 +28,10 @@ class DeleteForm extends FormModel
                 "legend" => "Delete an item",
             ],
             [
-                "select" => [
-                    "type"        => "select",
-                    "label"       => "Select item to delete:",
-                    "options"     => $this->getAllItems(),
+                "id" => [
+                    "type"        => "number",
+                    "label"       => "Item to delete:",
+                    "value"     => $id,
                 ],
 
                 "submit" => [
@@ -70,9 +73,16 @@ class DeleteForm extends FormModel
      */
     public function callbackSubmit() : bool
     {
+        // Check if the item with $id belongs to the user with $uid.
+        $uid = $this->di->session->get("user_id");
+
+        if (!$this->isUsersItem(new QuestionComment(), $this->itemId, $uid)) {
+            return false;
+        };
+
         $questionComment = new QuestionComment();
         $questionComment->setDb($this->di->get("dbqb"));
-        $questionComment->find("id", $this->form->value("select"));
+        $questionComment->find("id", $this->form->value("id"));
         $questionComment->delete();
         return true;
     }

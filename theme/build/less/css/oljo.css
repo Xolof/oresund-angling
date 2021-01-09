@@ -7021,13 +7021,16 @@ table .book-link:hover {
 .answer .time {
   margin-left: 1em;
 }
-.answer-comment-link {
+.answer-comment-link,
+.edit-delete-link {
   color: #a7a7a7;
   text-decoration: none;
 }
-.answer-comment-link:visited {
+.answer-comment-link:visited,
+.edit-delete-link:visited {
   color: #a7a7a7;
 }
-.answer-comment-link:hover {
+.answer-comment-link:hover,
+.edit-delete-link:hover {
   color: #33f;
 }

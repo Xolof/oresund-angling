@@ -56,21 +56,17 @@ class CreateForm extends FormModel
             return false;
         };
 
+        // Get the id of the question.
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
-        $answers = $answer->findAllWhere("id = ?", $this->aid);
-
-        if (!$answers) {
-            return false;
-        }
-
-        $this->qid = $answers[0]->qid;
+        $answer->find("id", $this->aid);
+        $this->qid = $answer->qid;
 
         $answerComment = new AnswerComment();
         $answerComment->setDb($this->di->get("dbqb"));
         $answerComment->aid  = $this->aid;
         $answerComment->uid = $this->di->session->get("user_id");
-        $answerComment->text = $this->form->value("text");
+        $answerComment->text = $this->form->rawValue("text");
         $answerComment->save();
 
         return true;

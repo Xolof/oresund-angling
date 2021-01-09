@@ -19,8 +19,7 @@ use Xolof\AnswerComment\HTMLForm\UpdateForm;
 class AnswerCommentController implements ContainerInjectableInterface
 {
     use ContainerInjectableTrait;
-
-
+    use \Xolof\Item\Item;
 
     /**
      * @var $data description
@@ -96,10 +95,23 @@ class AnswerCommentController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function deleteAction() : object
+    public function deleteAction($id) : object
     {
+        // Check if the item with $id belongs to the user with $uid.
+        $uid = $this->di->session->get("user_id");
+
+        if (!$this->isUsersItem(new AnswerComment(), $id, $uid)) {
+            $page = $this->di->get("page");
+
+            $page->add("default/403");
+
+            return $page->render([
+                "title" => "403 Forbidden",
+            ]);
+        };
+
         $page = $this->di->get("page");
-        $form = new DeleteForm($this->di);
+        $form = new DeleteForm($this->di, $id);
         $form->check();
 
         $page->add("answerComment/crud/delete", [
@@ -122,6 +134,19 @@ class AnswerCommentController implements ContainerInjectableInterface
      */
     public function updateAction(int $id) : object
     {
+        // Check if the item with $id belongs to the user with $uid.
+        $uid = $this->di->session->get("user_id");
+
+        if (!$this->isUsersItem(new AnswerComment(), $id, $uid)) {
+            $page = $this->di->get("page");
+
+            $page->add("default/403");
+
+            return $page->render([
+                "title" => "403 Forbidden",
+            ]);
+        };
+
         $page = $this->di->get("page");
         $form = new UpdateForm($this->di, $id);
         $form->check();

@@ -58,7 +58,7 @@ class CreateForm extends FormModel
         $answer->setDb($this->di->get("dbqb"));
         $answer->qid  = $this->qid;
         $answer->uid = $this->di->session->get("user_id");
-        $answer->text = $this->form->value("text");
+        $answer->text = $this->form->rawValue("text");
         $answer->save();
 
         return true;

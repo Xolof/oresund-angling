@@ -74,6 +74,12 @@ class UserController implements ContainerInjectableInterface
      */
     public function loginAction() : object
     {
+        $activeUser = $this->di->session->get("user_id");
+
+        if ($activeUser) {
+            return $this->di->response->redirect("user");
+        }
+
         $page = $this->di->get("page");
         $form = new UserLoginForm($this->di);
         $form->check();

@@ -32,7 +32,7 @@ class LogoutController implements ContainerInjectableInterface
     {
         // Deal with the action and return a response.
         $this->di->session->delete("user_id");
-        // TODO: There could be a message, confirming succesful logout.
+        $this->di->session->set("message", ["You have logged out."]);
         return $this->di->response->redirect("");
     }
 

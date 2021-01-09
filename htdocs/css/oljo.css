@@ -7034,3 +7034,14 @@ table .book-link:hover {
 .edit-delete-link:hover {
   color: #33f;
 }
+.message {
+  text-align: center;
+  color: blue;
+}
+.error {
+  text-align: center;
+  color: red;
+}
+.logged_in {
+  text-align: center;
+}

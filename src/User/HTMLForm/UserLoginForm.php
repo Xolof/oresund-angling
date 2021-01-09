@@ -89,13 +89,8 @@ class UserLoginForm extends FormModel
 
         // Add data to session here.
         $this->di->session->set("user_id", $user->id);
-        // var_dump($user);
-        // var_dump($this->di->session->get("user_id"));
-        // Clear messages?
-        // $this->app->session->set("error", []);
-        // $this->app->session->set("message", []);
+        $this->di->session->set("message", ["Welcome!"]);
 
-        // TODO: Add log-out functionality somewhere.
         $this->form->addOutput("User logged in.");
         return true;
     }

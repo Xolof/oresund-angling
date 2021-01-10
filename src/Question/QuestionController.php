@@ -11,6 +11,7 @@ use Xolof\Question\HTMLForm\UpdateForm;
 use Xolof\QuestionComment\QuestionComment;
 use Xolof\Answer\Answer;
 use Xolof\AnswerComment\AnswerComment;
+use Anax\User\User;
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
@@ -67,15 +68,22 @@ class QuestionController implements ContainerInjectableInterface
         $question->setDb($this->di->get("dbqb"));
         $q = $question->find("id", $id);
 
+        $q = $this->addUserAcronym($q);
+
         // Try to find comments for the question
         $questionComment = new QuestionComment();
         $questionComment->setDb($this->di->get("dbqb"));
         $qComments = $questionComment->findAllWhere("qid = ?", $question->id);
+        // Get the usernames.
+        $qComments = $this->addUserAcronym($qComments);
 
         // Try to find answers
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
         $answers = $answer->findAllWhere("qid = ?", $question->id);
+        // Get the usernames.
+        $answers = $this->addUserAcronym($answers);
+
 
         $aComments = [];
         // Try to find comments for answers
@@ -84,6 +92,9 @@ class QuestionController implements ContainerInjectableInterface
             $answerComment->setDb($this->di->get("dbqb"));
             $aComments["answer $item->id"] = $answerComment->findAllWhere("aid = ?", $item->id);
         }
+
+        // Get the usernames.
+        $aComments = $this->addUserAcronymAnswerComment($aComments);
 
         if (!$q->id) {
             $page->add("default/404");
@@ -106,6 +117,50 @@ class QuestionController implements ContainerInjectableInterface
         ]);
     }
 
+    /**
+     * Add the users acronym to each item.
+     *
+     * @return object as a response object
+     */
+    private function addUserAcronym($items)
+    {
+        $user = new User();
+        $user->setDb($this->di->get("dbqb"));
+
+        if (gettype($items) === "object") {
+            $user->findWhere("id = ?", $items->uid);
+            $item = $items;
+            $item->acronym = $user->acronym;
+            return $item;
+        }
+
+        foreach ($items as $item) {
+            $user->findWhere("id = ?", $item->uid);
+            $item->acronym = $user->acronym;
+        }
+        return $items;
+    }
+
+    /**
+     * Add the users acronym to each answer comment.
+     *
+     * @return object as a response object
+     */
+    private function addUserAcronymAnswerComment($items)
+    {
+        $user = new User();
+        $user->setDb($this->di->get("dbqb"));
+
+        foreach ($items as $item) {
+            if (count($item)) {
+                foreach ($item as $comment) {
+                    $user->findWhere("id = ?", $comment->uid);
+                    $comment->acronym = $user->acronym;             }
+            }
+        }
+        return $items;
+    }
+
 
     /**
      * Show all items.
@@ -118,8 +173,13 @@ class QuestionController implements ContainerInjectableInterface
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
 
+        $questions = $question->findAll();
+
+        // Get the usernames.
+        $questions = $this->addUserAcronym($questions);
+
         $page->add("question/crud/view-all", [
-            "items" => $question->findAll(),
+            "items" => $questions,
         ]);
 
         return $page->render([

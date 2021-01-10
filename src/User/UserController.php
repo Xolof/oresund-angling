@@ -106,6 +106,13 @@ class UserController implements ContainerInjectableInterface
      */
     public function createAction() : object
     {
+        $activeUser = $this->di->session->get("user_id");
+
+        if ($activeUser) {
+            $this->di->session->set("error", ["You need to log out before you can create a user."]);
+            return $this->di->response->redirect("user");
+        }
+
         $page = $this->di->get("page");
         $form = new CreateUserForm($this->di);
         $form->check();

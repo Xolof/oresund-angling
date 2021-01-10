@@ -35,7 +35,7 @@ endif;
 <table>
     <tr>
         <th>Id</th>
-        <th>uid</th>
+        <th>User</th>
         <th>time</th>
         <th>text</th>
     </tr>
@@ -44,7 +44,7 @@ endif;
         <td>
             <a href="<?= url("question/show/{$item->id}"); ?>"><?= $item->id ?></a>
         </td>
-        <td><?= htmlentities($item->uid) ?></td>
+        <td><?= htmlentities($item->acronym) ?></td>
         <td><?= htmlentities($item->time) ?></td>
         <td><?= htmlentities($item->text) ?></td>
     </tr>

@@ -27,26 +27,13 @@ class UpdateForm extends FormModel
         $this->form->create(
             [
                 "id" => __CLASS__,
-                "legend" => "Update details of the item",
+                // "legend" => "Update details of the item",
             ],
             [
-                "id" => [
-                    "type" => "text",
-                    "validation" => ["not_empty"],
-                    "readonly" => true,
-                    "value" => $question->id,
-                ],
-
-                "uid" => [
-                    "type" => "text",
-                    "validation" => ["not_empty"],
-                    "value" => $question->uid,
-                ],
-
                 "text" => [
                     "type" => "text",
-                    "validation" => ["not_empty"],
                     "value" => $question->text,
+                    "validation" => ["not_empty"],
                 ],
 
                 "submit" => [
@@ -98,25 +85,26 @@ class UpdateForm extends FormModel
 
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
-        $question->find("id", $this->form->value("id"));
-        $question->uid  = $this->form->rawValue("uid");
+        $question->find("id", $this->itemId);
+        $question->uid  = $uid;
         $question->text = $this->form->rawValue("text");
         $question->save();
+
         return true;
     }
 
 
 
-    // /**
-    //  * Callback what to do if the form was successfully submitted, this
-    //  * happen when the submit callback method returns true. This method
-    //  * can/should be implemented by the subclass for a different behaviour.
-    //  */
-    // public function callbackSuccess()
-    // {
-    //     $this->di->get("response")->redirect("question")->send();
-    //     //$this->di->get("response")->redirect("question/update/{$question->id}");
-    // }
+    /**
+     * Callback what to do if the form was successfully submitted, this
+     * happen when the submit callback method returns true. This method
+     * can/should be implemented by the subclass for a different behaviour.
+     */
+    public function callbackSuccess()
+    {
+        // $this->di->get("response")->redirect("question")->send();
+        $this->di->get("response")->redirect("question/show/{$this->itemId}");
+    }
 
 
 
@@ -128,6 +116,7 @@ class UpdateForm extends FormModel
     //  */
     // public function callbackFail()
     // {
-    //     $this->di->get("response")->redirectSelf()->send();
+    //     echo "fail";
+    //     // $this->di->get("response")->redirectSelf()->send();
     // }
 }

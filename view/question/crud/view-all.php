@@ -18,12 +18,11 @@ $urlToDelete = url("question/delete");
 
 
 
-?><h1>View all questions</h1>
+?><h1>Questions</h1>
 
-<p>
-    <a href="<?= $urlToCreate ?>">Create</a> |
-    <a href="<?= $urlToDelete ?>">Delete</a>
-</p>
+<h2>
+    <a href="<?= $urlToCreate ?>">Ask a question</a>
+</h2>
 
 <?php if (!$items) : ?>
     <p>There are no items to show.</p>
@@ -32,21 +31,13 @@ $urlToDelete = url("question/delete");
 endif;
 ?>
 
-<table>
-    <tr>
-        <th>Id</th>
-        <th>User</th>
-        <th>time</th>
-        <th>text</th>
-    </tr>
-    <?php foreach ($items as $item) : ?>
-    <tr>
-        <td>
-            <a href="<?= url("question/show/{$item->id}"); ?>"><?= $item->id ?></a>
-        </td>
-        <td><?= htmlentities($item->acronym) ?></td>
-        <td><?= htmlentities($item->time) ?></td>
-        <td><?= htmlentities($item->text) ?></td>
-    </tr>
-    <?php endforeach; ?>
-</table>
+<?php foreach ($items as $item) : ?>
+<div class="view-all-item">
+    <h3>
+        <a href="<?= url("question/show/{$item->id}"); ?>">Question heading</a>
+    </h3>
+    <p><?= htmlentities($item->text) ?></p>
+    <p>Asked by <?= htmlentities($item->acronym) ?></p>
+    <p><?= htmlentities($item->time) ?></p>
+</div>
+<?php endforeach; ?>

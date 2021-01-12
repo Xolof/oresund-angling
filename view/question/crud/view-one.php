@@ -36,7 +36,7 @@ $activeUser = $this->di->session->get("user_id");
     <?php foreach($qComments as $qComment): ?>
         <div class="qComment">
             <p><?= htmlentities($qComment->text) ?></p>
-            <p><a href="user/<?= $qComment->uid ?>">user <?= htmlentities($qComment->acronym) ?></a> <span class="time"><?= htmlentities($qComment->time) ?></span></p>
+            <p><a href="user/<?= $qComment->uid ?>"><?= htmlentities($qComment->acronym) ?></a> <span class="time"><?= htmlentities($qComment->time) ?></span></p>
             <?php if($activeUser === $qComment->uid): ?>
                 <a href="<?= url("question-comment/update/$qComment->id") ?>"  class="edit-delete-link">Edit</a>
                 | <a href="<?= url("question-comment/delete/$qComment->id") ?>"  class="edit-delete-link">Delete</a>

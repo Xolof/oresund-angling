@@ -5,6 +5,8 @@ namespace Xolof\AnswerComment\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Xolof\AnswerComment\AnswerComment;
+use Xolof\Question\Question;
+use Xolof\Answer\Answer;
 
 /**
  * Form to update an item.
@@ -23,38 +25,17 @@ class UpdateForm extends FormModel
     {
         parent::__construct($di);
         $this->itemId = $id;
-        $answerComment = $this->getItemDetails($id);
+        $this->answerComment = $this->getItemDetails($id);
         $this->form->create(
             [
                 "id" => __CLASS__,
-                "legend" => "Update details of the item",
+                // "legend" => "Update details of the item",
             ],
             [
-                "id" => [
-                    "type" => "number",
-                    "validation" => ["not_empty"],
-                    "readonly" => true,
-                    "value" => $answerComment->id,
-                ],
-
-                "aid" => [
-                    "type" => "number",
-                    "validation" => ["not_empty"],
-                    "readonly" => true,
-                    "value" => $answerComment->aid,
-                ],
-
-                "uid" => [
-                    "type" => "number",
-                    "validation" => ["not_empty"],
-                    "readonly" => true,
-                    "value" => $answerComment->uid,
-                ],
-
                 "text" => [
                     "type" => "text",
                     "validation" => ["not_empty"],
-                    "value" => $answerComment->text,
+                    "value" => $this->answerComment->text,
                 ],
 
                 "submit" => [
@@ -84,6 +65,13 @@ class UpdateForm extends FormModel
         $answerComment = new AnswerComment();
         $answerComment->setDb($this->di->get("dbqb"));
         $answerComment->find("id", $id);
+
+        $answer = new Answer();
+        $answer->setDb($this->di->get("dbqb"));
+        $answer->find("id", $answerComment->aid);
+
+        $answerComment->qid = $answer->qid;
+
         return $answerComment;
     }
 
@@ -106,7 +94,7 @@ class UpdateForm extends FormModel
 
         $answerComment = new AnswerComment();
         $answerComment->setDb($this->di->get("dbqb"));
-        $answerComment->find("id", $this->form->rawValue("id"));
+        $answerComment->find("id", $this->itemId);
         $answerComment->text = $this->form->rawValue("text");
         $answerComment->save();
         return true;
@@ -114,16 +102,16 @@ class UpdateForm extends FormModel
 
 
 
-    // /**
-    //  * Callback what to do if the form was successfully submitted, this
-    //  * happen when the submit callback method returns true. This method
-    //  * can/should be implemented by the subclass for a different behaviour.
-    //  */
-    // public function callbackSuccess()
-    // {
-    //     $this->di->get("response")->redirect("answer-comment")->send();
-    //     //$this->di->get("response")->redirect("answer-comment/update/{$answerComment->id}");
-    // }
+    /**
+     * Callback what to do if the form was successfully submitted, this
+     * happen when the submit callback method returns true. This method
+     * can/should be implemented by the subclass for a different behaviour.
+     */
+    public function callbackSuccess()
+    {
+        $this->di->get("response")->redirect("question/show/{$this->answerComment->qid}")->send();
+        //$this->di->get("response")->redirect("answer-comment/update/{$answerComment->id}");
+    }
 
 
 

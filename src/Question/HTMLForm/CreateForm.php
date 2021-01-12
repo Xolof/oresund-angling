@@ -24,7 +24,7 @@ class CreateForm extends FormModel
 
             [
                 "id" => __CLASS__,
-                "legend" => "Details of the item",
+                // "legend" => "Details of the item",
             ],
             [
                 "text" => [
@@ -51,14 +51,15 @@ class CreateForm extends FormModel
      */
     public function callbackSubmit() : bool
     {
-        if (!$this->di->session->get("user_id")) {
+        $uid = $this->di->session->get("user_id");
+
+        if (!$uid) {
             return false;
         };
 
-
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
-        $question->uid  = $this->di->session->get("user_id");
+        $question->uid  = $uid;
         $question->text = $this->form->rawValue("text");
         $question->save();
 
@@ -76,7 +77,7 @@ class CreateForm extends FormModel
      */
     public function callbackSuccess()
     {
-        $this->di->get("response")->redirect("question/show/$this->id")->send();
+        $this->di->get("response")->redirect("question/show/{$this->id}");
     }
 
 

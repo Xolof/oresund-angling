@@ -22,16 +22,18 @@ class DeleteForm extends FormModel
     {
         parent::__construct($di);
         $this->itemId = $id;
+        $question = $this->getItemDetails($id);
         $this->form->create(
             [
                 "id" => __CLASS__,
-                "legend" => "Delete an item",
+                // "legend" => "Delete an item",
             ],
             [
-                "id" => [
-                    "type"        => "number",
-                    "label"       => "Item to delete:",
-                    "value"       => $id
+                "text" => [
+                    "type"        => "text",
+                    "label"       => "Question to delete:",
+                    "value"       => $question->text,
+                    "readonly"    => true,
                 ],
 
                 "submit" => [
@@ -44,26 +46,20 @@ class DeleteForm extends FormModel
     }
 
 
-
     /**
-     * Get all items as array suitable for display in select option dropdown.
+     * Get details on item to load form with.
      *
-     * @return array with key value of all items.
+     * @param integer $id get details on item with id.
+     *
+     * @return Question
      */
-    protected function getAllItems() : array
+    public function getItemDetails($id) : object
     {
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
-
-        $questions = ["-1" => "Select an item..."];
-        foreach ($question->findAll() as $obj) {
-            $questions[$obj->id] = "{$obj->id} ({$obj->id})";
-        }
-
-        return $questions;
+        $question->find("id", $id);
+        return $question;
     }
-
-
 
     /**
      * Callback for submit-button which should return true if it could
@@ -82,7 +78,7 @@ class DeleteForm extends FormModel
 
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
-        $question->find("id", $this->form->value("id"));
+        $question->find("id", $this->itemId);
         $question->delete();
         return true;
     }

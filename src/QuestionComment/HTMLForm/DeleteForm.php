@@ -22,16 +22,18 @@ class DeleteForm extends FormModel
     {
         $this->itemId = $id;
         parent::__construct($di);
+        $this->questionComment = $this->getItemDetails($id);
         $this->form->create(
             [
                 "id" => __CLASS__,
-                "legend" => "Delete an item",
+                // "legend" => "Delete an item",
             ],
             [
-                "id" => [
-                    "type"        => "number",
+                "text" => [
+                    "type"        => "text",
                     "label"       => "Item to delete:",
-                    "value"     => $id,
+                    "value"       => $this->questionComment->text,
+                    "readonly"    => true
                 ],
 
                 "submit" => [
@@ -44,25 +46,20 @@ class DeleteForm extends FormModel
     }
 
 
-
     /**
-     * Get all items as array suitable for display in select option dropdown.
+     * Get details on item to load form with.
      *
-     * @return array with key value of all items.
+     * @param integer $id get details on item with id.
+     *
+     * @return QuestionComment
      */
-    protected function getAllItems() : array
+    public function getItemDetails($id) : object
     {
         $questionComment = new QuestionComment();
         $questionComment->setDb($this->di->get("dbqb"));
-
-        $questionComments = ["-1" => "Select an item..."];
-        foreach ($questionComment->findAll() as $obj) {
-            $questionComments[$obj->id] = "{$obj->id} ({$obj->id})";
-        }
-
-        return $questionComments;
+        $questionComment->find("id", $id);
+        return $questionComment;
     }
-
 
 
     /**
@@ -82,7 +79,7 @@ class DeleteForm extends FormModel
 
         $questionComment = new QuestionComment();
         $questionComment->setDb($this->di->get("dbqb"));
-        $questionComment->find("id", $this->form->value("id"));
+        $questionComment->find("id", $this->itemId);
         $questionComment->delete();
         return true;
     }
@@ -96,7 +93,7 @@ class DeleteForm extends FormModel
      */
     public function callbackSuccess()
     {
-        $this->di->get("response")->redirect("question-comment")->send();
+        $this->di->get("response")->redirect("question/show/{$this->questionComment->qid}")->send();
     }
 
 

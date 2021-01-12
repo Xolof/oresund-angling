@@ -23,38 +23,17 @@ class UpdateForm extends FormModel
     {
         parent::__construct($di);
         $this->itemId = $id;
-        $questionComment = $this->getItemDetails($id);
+        $this->questionComment = $this->getItemDetails($id);
         $this->form->create(
             [
                 "id" => __CLASS__,
-                "legend" => "Update details of the item",
+                // "legend" => "Update details of the item",
             ],
             [
-                "id" => [
-                    "type" => "text",
-                    "validation" => ["not_empty"],
-                    "readonly" => true,
-                    "value" => $questionComment->id,
-                ],
-
-                "qid" => [
-                    "type" => "text",
-                    "validation" => ["not_empty"],
-                    "readonly" => true,
-                    "value" => $questionComment->qid,
-                ],
-
-                "uid" => [
-                    "type" => "text",
-                    "validation" => ["not_empty"],
-                    "readonly" => true,
-                    "value" => $questionComment->uid,
-                ],
-
                 "text" => [
                     "type" => "text",
                     "validation" => ["not_empty"],
-                    "value" => $questionComment->text,
+                    "value" => $this->questionComment->text,
                 ],
 
                 "submit" => [
@@ -106,26 +85,27 @@ class UpdateForm extends FormModel
 
         $questionComment = new QuestionComment();
         $questionComment->setDb($this->di->get("dbqb"));
-        $questionComment->find("id", $this->form->rawValue("id"));
-        $questionComment->qid  = $this->form->rawValue("qid");
-        $questionComment->uid = $this->form->rawValue("uid");
-        $questionComment->text = $this->form->rawValue("text");
+        // använd ej this->form
+        $questionComment->find("id", $this->questionComment->id);
+        $questionComment->qid  = $this->questionComment->qid;
+        $questionComment->uid = $this->questionComment->uid;
+        $questionComment->text = $this->questionComment->text;
         $questionComment->save();
         return true;
     }
 
 
 
-    // /**
-    //  * Callback what to do if the form was successfully submitted, this
-    //  * happen when the submit callback method returns true. This method
-    //  * can/should be implemented by the subclass for a different behaviour.
-    //  */
-    // public function callbackSuccess()
-    // {
-    //     $this->di->get("response")->redirect("question-comment")->send();
-    //     //$this->di->get("response")->redirect("question-comment/update/{$questionComment->id}");
-    // }
+    /**
+     * Callback what to do if the form was successfully submitted, this
+     * happen when the submit callback method returns true. This method
+     * can/should be implemented by the subclass for a different behaviour.
+     */
+    public function callbackSuccess()
+    {
+        $this->di->get("response")->redirect("question/show/{$this->questionComment->qid}")->send();
+        //$this->di->get("response")->redirect("question-comment/update/{$questionComment->id}");
+    }
 
 
 

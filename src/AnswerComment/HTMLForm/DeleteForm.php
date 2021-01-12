@@ -5,6 +5,7 @@ namespace Xolof\AnswerComment\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Xolof\AnswerComment\AnswerComment;
+use Xolof\Answer\Answer;
 
 /**
  * Form to delete an item.
@@ -22,16 +23,18 @@ class DeleteForm extends FormModel
     {
         parent::__construct($di);
         $this->itemId = $id;
+        $this->answerComment = $this->getItemDetails($id);
         $this->form->create(
             [
                 "id" => __CLASS__,
-                "legend" => "Delete an item",
+                // "legend" => "Delete an item",
             ],
             [
-                "id" => [
-                    "type"        => "number",
+                "text" => [
+                    "type"        => "text",
                     "label"       => "Item to delete:",
-                    "value"     => $id,
+                    "value"       => $this->answerComment->text,
+                    "readonly"    => true
                 ],
 
                 "submit" => [
@@ -46,21 +49,25 @@ class DeleteForm extends FormModel
 
 
     /**
-     * Get all items as array suitable for display in select option dropdown.
+     * Get details on item to load form with.
      *
-     * @return array with key value of all items.
+     * @param integer $id get details on item with id.
+     *
+     * @return QuestionComment
      */
-    protected function getAllItems() : array
+    public function getItemDetails($id) : object
     {
         $answerComment = new AnswerComment();
         $answerComment->setDb($this->di->get("dbqb"));
+        $answerComment->find("id", $id);
 
-        $answerComments = ["-1" => "Select an item..."];
-        foreach ($answerComment->findAll() as $obj) {
-            $answerComments[$obj->id] = "{$obj->id} ({$obj->id})";
-        }
+        $answer = new Answer();
+        $answer->setDb($this->di->get("dbqb"));
+        $answer->find("id", $answerComment->aid);
 
-        return $answerComments;
+        $answerComment->qid = $answer->qid;
+
+        return $answerComment;
     }
 
 
@@ -82,7 +89,7 @@ class DeleteForm extends FormModel
 
         $answerComment = new AnswerComment();
         $answerComment->setDb($this->di->get("dbqb"));
-        $answerComment->find("id", $this->form->value("id"));
+        $answerComment->find("id", $this->answerComment->id);
         $answerComment->delete();
         return true;
     }
@@ -96,7 +103,7 @@ class DeleteForm extends FormModel
      */
     public function callbackSuccess()
     {
-        $this->di->get("response")->redirect("answer-comment")->send();
+        $this->di->get("response")->redirect("question/show/{$this->answerComment->qid}")->send();
     }
 
 

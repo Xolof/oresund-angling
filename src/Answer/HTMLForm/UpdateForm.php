@@ -23,38 +23,18 @@ class UpdateForm extends FormModel
     {
         parent::__construct($di);
         $this->itemId = $id;
-        $answer = $this->getItemDetails($id);
+        $this->answer = $this->getItemDetails($id);
         $this->form->create(
             [
                 "id" => __CLASS__,
-                "legend" => "Update details of the item",
+                // "legend" => "Update details of the item",
             ],
             [
-                "id" => [
-                    "type" => "number",
-                    "validation" => ["not_empty"],
-                    "readonly" => true,
-                    "value" => $answer->id,
-                ],
-
-                "uid" => [
-                    "type" => "number",
-                    "validation" => ["not_empty"],
-                    "readonly" => true,
-                    "value" => $answer->uid,
-                ],
-
-                "qid" => [
-                    "type" => "number",
-                    "validation" => ["not_empty"],
-                    "readonly" => true,
-                    "value" => $answer->qid,
-                ],
 
                 "text" => [
                     "type" => "text",
                     "validation" => ["not_empty"],
-                    "value" => $answer->text,
+                    "value" => $this->answer->text,
                 ],
 
                 "submit" => [
@@ -106,7 +86,7 @@ class UpdateForm extends FormModel
 
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
-        $answer->find("id", $this->form->rawValue("id"));
+        $answer->find("id", $this->itemId);
         $answer->text = $this->form->rawValue("text");
         $answer->save();
         return true;
@@ -114,27 +94,27 @@ class UpdateForm extends FormModel
 
 
 
-    // /**
-    //  * Callback what to do if the form was successfully submitted, this
-    //  * happen when the submit callback method returns true. This method
-    //  * can/should be implemented by the subclass for a different behaviour.
-    //  */
-    // public function callbackSuccess()
-    // {
-    //     $this->di->get("response")->redirect("answer")->send();
-    //     //$this->di->get("response")->redirect("answer/update/{$answer->id}");
-    // }
+    /**
+     * Callback what to do if the form was successfully submitted, this
+     * happen when the submit callback method returns true. This method
+     * can/should be implemented by the subclass for a different behaviour.
+     */
+    public function callbackSuccess()
+    {
+        $this->di->get("response")->redirect("question/show/{$this->answer->qid}");
+        //$this->di->get("response")->redirect("answer/update/{$answer->id}");
+    }
 
 
 
-    // /**
-    //  * Callback what to do if the form was unsuccessfully submitted, this
-    //  * happen when the submit callback method returns false or if validation
-    //  * fails. This method can/should be implemented by the subclass for a
-    //  * different behaviour.
-    //  */
-    // public function callbackFail()
-    // {
-    //     $this->di->get("response")->redirectSelf()->send();
-    // }
+    /**
+     * Callback what to do if the form was unsuccessfully submitted, this
+     * happen when the submit callback method returns false or if validation
+     * fails. This method can/should be implemented by the subclass for a
+     * different behaviour.
+     */
+    public function callbackFail()
+    {
+        $this->di->get("response")->redirectSelf()->send();
+    }
 }

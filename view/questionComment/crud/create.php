@@ -10,17 +10,13 @@ namespace Anax\View;
 //echo showEnvironment(get_defined_vars());
 
 // Gather incoming variables and use default values if not set
-$items = isset($items) ? $items : null;
+// $items = isset($items) ? $items : null;
 
 // Create urls for navigation
-$urlToViewItems = url("question-comment");
+// $urlToViewItems = url("question-comment");
 
 
 
-?><h1>Create a item</h1>
+?><h1>Comment on a question</h1>
 
 <?= $form ?>
-
-<p>
-    <a href="<?= $urlToViewItems ?>">View all</a>
-</p>

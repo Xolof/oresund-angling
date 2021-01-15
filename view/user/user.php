@@ -8,10 +8,11 @@ $activeUser = $this->di->session->get("user_id");
 
 <?php if ($activeUser) : ?>
     <a href="logout">Logout</a>
+        | <a href="user/show/<?= $activeUser ?>">Show your profile</a>
+        | <a href="<?= url("user-profile/update/$activeUser") ?>">Update your profile</a>
 <?php else: ?>
     <a href="user/login">Login</a>
+    | <a href="user/create">Sign up</a>
 <?php endif ?>
-
-| <a href="user/create">Create</a>
 
 <p>Create an account or login to be able to add questions, answer questions and make comments.</p>

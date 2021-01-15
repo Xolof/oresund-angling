@@ -12,6 +12,6 @@ namespace Anax\View;
 // Create urls for navigation
 // $urlToView = url("question-comment");
 
-?><h1>Delete an comment</h1>
+?><h1>Delete a comment</h1>
 
 <?= $form ?>

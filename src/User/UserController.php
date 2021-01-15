@@ -6,6 +6,11 @@ use Anax\Commons\ContainerInjectableInterface;
 use Anax\Commons\ContainerInjectableTrait;
 use Xolof\User\HTMLForm\UserLoginForm;
 use Xolof\User\HTMLForm\CreateUserForm;
+use Xolof\User\HTMLForm\UserForm;
+use Xolof\User\HTMLForm\UpdateForm;
+use Xolof\UserProfile\UserProfile;
+use Anax\User\User;
+use Michelf\Markdown;
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
@@ -17,8 +22,6 @@ use Xolof\User\HTMLForm\CreateUserForm;
 class UserController implements ContainerInjectableInterface
 {
     use ContainerInjectableTrait;
-
-
 
     /**
      * @var $data description
@@ -124,6 +127,67 @@ class UserController implements ContainerInjectableInterface
         return $page->render([
             "title" => "A create user page",
         ]);
+    }
+
+
+    /**
+     * This method action takes one argument:
+     * GET mountpoint/argument/<value>
+     *
+     * @param mixed $value
+     *
+     * @return string
+     */
+    public function showActionGet($id) // : object
+    {
+        $page = $this->di->get("page");
+
+        // Try to find user with $id
+        $user = new User();
+        $user->setDb($this->di->get("dbqb"));
+        $user->find("id", $id);
+
+        if (!is_numeric($id) || !$user->id) {
+            $page->add("default/404");
+
+            return $page->render([
+                "title" => "404 - not found",
+            ]);
+        }
+
+        $userProfile = new UserProfile();
+        $userProfile->setDb($this->di->get("dbqb"));
+        $userProfile->find("id", $id);
+
+        $presentation = $userProfile->presentation ? $this->markdown($userProfile->presentation) : null;
+
+        $page->add("user/show-one", [
+            "data" => [
+                "uid"       => $user->id,
+                "acronym"       => $user->acronym,
+                "presentation"  => $presentation,
+                "gravatar"      => $user->gravatar
+            ]
+        ]);
+
+        return $page->render([
+            "title" => "User $user->acronym",
+        ]);
+    }
+
+
+    /**
+     * Format text according to Markdown syntax.
+     *
+     * @param string $text The text that should be formatted.
+     *
+     * @return string as the formatted html text.
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    private function markdown($text)
+    {
+        return Markdown::defaultTransform(htmlentities($text));
     }
 
 

@@ -5,6 +5,8 @@ namespace Xolof\Question\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Xolof\Question\Question;
+use Xolof\Question\Tag;
+use Xolof\Question\TagToQuestion;
 
 /**
  * Form to create an item.
@@ -28,13 +30,17 @@ class CreateForm extends FormModel
             ],
             [
                 "text" => [
-                    "type" => "text",
+                    "type" => "textarea",
                     "validation" => ["not_empty"],
+                ],
+
+                "tags" => [
+                    "type" => "text"
                 ],
 
                 "submit" => [
                     "type" => "submit",
-                    "value" => "Create item",
+                    "value" => "Submit",
                     "callback" => [$this, "callbackSubmit"]
                 ],
             ]
@@ -65,8 +71,34 @@ class CreateForm extends FormModel
 
         $this->id = $question->id;
 
+        // Get the tags as comma separated values from the form.
+        $tags = explode(",", $this->form->rawValue("tags"));
+
+        foreach ($tags as $tagStr) {
+            $tagStr = preg_replace("/[^A-Za-z0-9]/", '', trim($tagStr));
+
+            $tag = new Tag();
+            $tag->setDb($this->di->get("dbqb"));
+
+            if (!$tag->find("tag", $tagStr)->id) {
+                // Save the tag.
+                $tag = new Tag();
+                $tag->setDb($this->di->get("dbqb"));
+                $tag->tag = $tagStr;
+                $tag->save();
+            }
+
+            // Write to help-table TagToQuestion.
+            $tagToQuestion = new TagToQuestion();
+            $tagToQuestion->setDb($this->di->get("dbqb"));
+            $tagToQuestion->tagid = $tag->id;
+            $tagToQuestion->qid = $this->id;
+            $tagToQuestion->save();
+        }
+
         return true;
     }
+
 
 
 
@@ -79,17 +111,4 @@ class CreateForm extends FormModel
     {
         $this->di->get("response")->redirect("question/show/{$this->id}");
     }
-
-
-
-    // /**
-    //  * Callback what to do if the form was unsuccessfully submitted, this
-    //  * happen when the submit callback method returns false or if validation
-    //  * fails. This method can/should be implemented by the subclass for a
-    //  * different behaviour.
-    //  */
-    // public function callbackFail()
-    // {
-    //     $this->di->get("response")->redirectSelf()->send();
-    // }
 }

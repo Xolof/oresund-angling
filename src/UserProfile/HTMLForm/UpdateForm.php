@@ -1,10 +1,10 @@
 <?php
 
-namespace Xolof\Answer\HTMLForm;
+namespace Xolof\UserProfile\HTMLForm;
 
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
-use Xolof\Answer\Answer;
+use Xolof\UserProfile\UserProfile;
 
 /**
  * Form to update an item.
@@ -22,19 +22,19 @@ class UpdateForm extends FormModel
     public function __construct(ContainerInterface $di, $id)
     {
         parent::__construct($di);
+        $this->uid = $this->di->session->get("user_id");
         $this->itemId = $id;
-        $this->answer = $this->getItemDetails($id);
+        $userProfile = $this->getItemDetails($id);
         $this->form->create(
             [
                 "id" => __CLASS__,
                 // "legend" => "Update details of the item",
             ],
             [
-
-                "text" => [
+                "presentation" => [
                     "type" => "textarea",
+                    "value" => $userProfile->presentation,
                     "validation" => ["not_empty"],
-                    "value" => $this->answer->text,
                 ],
 
                 "submit" => [
@@ -57,14 +57,14 @@ class UpdateForm extends FormModel
      *
      * @param integer $id get details on item with id.
      *
-     * @return Answer
+     * @return UserProfile
      */
     public function getItemDetails($id) : object
     {
-        $answer = new Answer();
-        $answer->setDb($this->di->get("dbqb"));
-        $answer->find("id", $id);
-        return $answer;
+        $userProfile = new UserProfile();
+        $userProfile->setDb($this->di->get("dbqb"));
+        $userProfile->find("id", $id);
+        return $userProfile;
     }
 
 
@@ -78,17 +78,17 @@ class UpdateForm extends FormModel
     public function callbackSubmit() : bool
     {
         // Check if the item with $id belongs to the user with $uid.
-        $uid = $this->di->session->get("user_id");
-
-        if (!$this->isUsersItem(new Answer(), $this->itemId, $uid)) {
+        if (!$this->isUsersItem(new UserProfile(), $this->itemId, $this->uid)) {
             return false;
         };
 
-        $answer = new Answer();
-        $answer->setDb($this->di->get("dbqb"));
-        $answer->find("id", $this->itemId);
-        $answer->text = $this->form->rawValue("text");
-        $answer->save();
+        $userProfile = new UserProfile();
+        $userProfile->setDb($this->di->get("dbqb"));
+        $userProfile->find("id", $this->itemId);
+        $userProfile->uid  = $this->uid;
+        $userProfile->presentation = $this->form->rawValue("presentation");
+        $userProfile->save();
+
         return true;
     }
 
@@ -101,20 +101,21 @@ class UpdateForm extends FormModel
      */
     public function callbackSuccess()
     {
-        $this->di->get("response")->redirect("question/show/{$this->answer->qid}");
-        //$this->di->get("response")->redirect("answer/update/{$answer->id}");
+        // $this->di->get("response")->redirect("userProfile")->send();
+        $this->di->get("response")->redirect("user/show/{$this->uid}");
     }
 
 
 
-    /**
-     * Callback what to do if the form was unsuccessfully submitted, this
-     * happen when the submit callback method returns false or if validation
-     * fails. This method can/should be implemented by the subclass for a
-     * different behaviour.
-     */
-    public function callbackFail()
-    {
-        $this->di->get("response")->redirectSelf()->send();
-    }
+    // /**
+    //  * Callback what to do if the form was unsuccessfully submitted, this
+    //  * happen when the submit callback method returns false or if validation
+    //  * fails. This method can/should be implemented by the subclass for a
+    //  * different behaviour.
+    //  */
+    // public function callbackFail()
+    // {
+    //     echo "fail";
+    //     // $this->di->get("response")->redirectSelf()->send();
+    // }
 }

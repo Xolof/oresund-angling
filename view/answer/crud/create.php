@@ -17,10 +17,6 @@ $urlToViewItems = url("answer");
 
 
 
-?><h1>Create a item</h1>
+?><h1>Add an answer</h1>
 
 <?= $form ?>
-
-<p>
-    <a href="<?= $urlToViewItems ?>">View all</a>
-</p>

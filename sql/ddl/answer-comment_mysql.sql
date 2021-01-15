@@ -36,5 +36,5 @@ CREATE TABLE AnswerComment (
     `aid` INTEGER NOT NULL,
     `uid` INTEGER NOT NULL,
     `time` TIMESTAMP DEFAULT NOW() NOT NULL,
-    `text` VARCHAR(256) NOT NULL
+    `text` TEXT NOT NULL
 ) ENGINE INNODB CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;

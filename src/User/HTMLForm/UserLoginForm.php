@@ -91,7 +91,18 @@ class UserLoginForm extends FormModel
         $this->di->session->set("user_id", $user->id);
         $this->di->session->set("message", ["Welcome!"]);
 
-        $this->form->addOutput("User logged in.");
         return true;
     }
+
+
+        /**
+         * Callback what to do if the form was successfully submitted, this
+         * happen when the submit callback method returns true. This method
+         * can/should be implemented by the subclass for a different behaviour.
+         */
+        public function callbackSuccess()
+        {
+            $this->di->get("response")->redirect("")->send();
+            // $this->di->get("response")->redirect("question");
+        }
 }

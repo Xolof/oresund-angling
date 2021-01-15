@@ -5,6 +5,8 @@ namespace Xolof\Question\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Xolof\Question\Question;
+use Xolof\Question\Tag;
+use Xolof\Question\TagToQuestion;
 
 /**
  * Form to update an item.
@@ -24,6 +26,7 @@ class UpdateForm extends FormModel
         parent::__construct($di);
         $this->itemId = $id;
         $question = $this->getItemDetails($id);
+        $tags = $this->getTags($id);
         $this->form->create(
             [
                 "id" => __CLASS__,
@@ -31,9 +34,14 @@ class UpdateForm extends FormModel
             ],
             [
                 "text" => [
-                    "type" => "text",
+                    "type" => "textarea",
                     "value" => $question->text,
                     "validation" => ["not_empty"],
+                ],
+
+                "tags" => [
+                    "type" => "text",
+                    "value" => $tags
                 ],
 
                 "submit" => [
@@ -67,6 +75,32 @@ class UpdateForm extends FormModel
     }
 
 
+    /**
+     * Get the tags for the item.
+     *
+     * @param integer $id get tags for item with id.
+     *
+     * @return string
+     */
+    public function getTags($id) : string
+    {
+        $tagToQuestion = new TagToQuestion();
+        $tagToQuestion->setDb($this->di->get("dbqb"));
+        $tagRows = $tagToQuestion->findAllWhere("qid = ?", $id);
+
+        $tags = "";
+
+        foreach ($tagRows as $row) {
+            $tag = new Tag();
+            $tag->setDb($this->di->get("dbqb"));
+            $tag->find("id", $row->tagid);
+            $tags .= $tag->tag . ", ";
+        }
+
+        return rtrim($tags, ", ");
+    }
+
+
 
     /**
      * Callback for submit-button which should return true if it could
@@ -83,12 +117,77 @@ class UpdateForm extends FormModel
             return false;
         };
 
+        // Save the question.
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
         $question->find("id", $this->itemId);
         $question->uid  = $uid;
         $question->text = $this->form->rawValue("text");
         $question->save();
+
+        // Get the tags as comma separated values from the form.
+        $rawNewTags = explode(",", $this->form->rawValue("tags"));
+        $newTags = [];
+
+        foreach ($rawNewTags as $tagStr) {
+            $trimmed = trim($tagStr);
+            $newTags[] = preg_replace("/[^A-Za-z0-9]/", '', $trimmed);
+        }
+
+
+        foreach ($newTags as $tagStr) {
+
+            $tag = new Tag();
+            $tag->setDb($this->di->get("dbqb"));
+
+            if (!$tag->find("tag", $tagStr)->id) {
+                // Save the tag.
+                $tag = new Tag();
+                $tag->setDb($this->di->get("dbqb"));
+                $tag->tag = $tagStr;
+                $tag->save();
+            }
+
+            $tagId = $tag->find("tag", $tagStr)->id;
+
+            $tagToQuestion = new TagToQuestion();
+            $tagToQuestion->setDb($this->di->get("dbqb"));
+
+            if (!$tagToQuestion->find("tagid", $tagId)->id) {
+                // Write to help-table TagToQuestion.
+                $newTTQ = new TagToQuestion();
+                $newTTQ->setDb($this->di->get("dbqb"));
+                $newTTQ->tagid = $tag->id;
+                $newTTQ->qid = $this->itemId;
+                $newTTQ->save();
+            }
+        }
+
+        // Get the old tags.
+        $tagToQuestion = new TagToQuestion();
+        $tagToQuestion->setDb($this->di->get("dbqb"));
+        $tagToQuestions = $tagToQuestion->findAllWhere("qid = ?", $this->itemId);
+
+        $oldTagArr = [];
+        foreach ($tagToQuestions as $tTQ) {
+            $tag = new Tag();
+            $tag->setDb($this->di->get("dbqb"));
+            $oldTagArr[] = $tag->find("id", $tTQ->tagid)->tag;
+        }
+
+        foreach ($oldTagArr as $oldTag) {
+            // Check if any tag rows should be removed.
+            if (!in_array($oldTag, $newTags)) {
+                $tag = new Tag();
+                $tag->setDb($this->di->get("dbqb"));
+                $tag->find("tag", $oldTag);
+
+                $tagToQuestion = new TagToQuestion();
+                $tagToQuestion->setDb($this->di->get("dbqb"));
+                $tagToQuestion->find("tagid", $tag->id);
+                $tagToQuestion->delete();
+            }
+        }
 
         return true;
     }

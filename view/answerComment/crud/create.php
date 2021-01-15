@@ -17,10 +17,6 @@ $urlToViewItems = url("answer-comment");
 
 
 
-?><h1>Create a item</h1>
+?><h1>Add a comment</h1>
 
 <?= $form ?>
-
-<p>
-    <a href="<?= $urlToViewItems ?>">View all</a>
-</p>

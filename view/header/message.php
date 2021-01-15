@@ -8,7 +8,9 @@ $activeUser = $this->di->session->get("user_id");
 ?>
 
 <?php if ($activeUser) : ?>
-<p class="logged_in">User with id <?= $activeUser ?> is logged in. | <a href="<?= url('logout')?>">Log out</a></p>
+<p class="logged_in">
+    <a href="<?= url('logout')?>">Log out</a>
+</p>
 <?php endif ?>
 
 

@@ -16,19 +16,9 @@ $navbar = [
             "title" => "Questions.",
         ],
         [
-            "text" => "QuestionComment",
-            "url" => "question-comment",
-            "title" => "QuestionComment.",
-        ],
-        [
-            "text" => "Answer",
-            "url" => "answer",
-            "title" => "Answer.",
-        ],
-        [
-            "text" => "AnswerComment",
-            "url" => "answer-comment",
-            "title" => "AnswerComment.",
+            "text" => "Ask",
+            "url" => "question/create",
+            "title" => "Ask.",
         ],
         [
             "text" => "User",

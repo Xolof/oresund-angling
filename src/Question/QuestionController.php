@@ -12,6 +12,7 @@ use Xolof\QuestionComment\QuestionComment;
 use Xolof\Answer\Answer;
 use Xolof\AnswerComment\AnswerComment;
 use Anax\User\User;
+use Michelf\Markdown;
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
@@ -68,22 +69,24 @@ class QuestionController implements ContainerInjectableInterface
         $question->setDb($this->di->get("dbqb"));
         $q = $question->find("id", $id);
 
-        $q = $this->addUserAcronym($q);
+        $q = $this->addUserData($q);
+        $q = $this->parseTextMarkdown($q);
 
         // Try to find comments for the question
         $questionComment = new QuestionComment();
         $questionComment->setDb($this->di->get("dbqb"));
         $qComments = $questionComment->findAllWhere("qid = ?", $question->id);
         // Get the usernames.
-        $qComments = $this->addUserAcronym($qComments);
+        $qComments = $this->addUserData($qComments);
+        $qComments = $this->parseTextMarkdown($qComments);
 
         // Try to find answers
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
         $answers = $answer->findAllWhere("qid = ?", $question->id);
         // Get the usernames.
-        $answers = $this->addUserAcronym($answers);
-
+        $answers = $this->addUserData($answers);
+        $answers = $this->parseTextMarkdown($answers);
 
         $aComments = [];
         // Try to find comments for answers
@@ -94,7 +97,8 @@ class QuestionController implements ContainerInjectableInterface
         }
 
         // Get the usernames.
-        $aComments = $this->addUserAcronymAnswerComment($aComments);
+        $aComments = $this->addUserDataAnswerComment($aComments);
+        $aComments = $this->parseTextMarkdownAnswerComment($aComments);
 
         if (!$q->id) {
             $page->add("default/404");
@@ -113,16 +117,16 @@ class QuestionController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "Question $q->id",
+            "title" => "View question",
         ]);
     }
 
     /**
      * Add the users acronym to each item.
      *
-     * @return object as a response object
+     * @return $items, an array of items.
      */
-    private function addUserAcronym($items)
+    private function addUserData($items)
     {
         $user = new User();
         $user->setDb($this->di->get("dbqb"));
@@ -131,22 +135,25 @@ class QuestionController implements ContainerInjectableInterface
             $user->findWhere("id = ?", $items->uid);
             $item = $items;
             $item->acronym = $user->acronym;
+            $item->gravatar = $user->gravatar;
             return $item;
         }
 
         foreach ($items as $item) {
             $user->findWhere("id = ?", $item->uid);
             $item->acronym = $user->acronym;
+            $item->gravatar = $user->gravatar;
         }
         return $items;
     }
 
+
     /**
      * Add the users acronym to each answer comment.
      *
-     * @return object as a response object
+     * @return $items, an array of items.
      */
-    private function addUserAcronymAnswerComment($items)
+    private function addUserDataAnswerComment($items)
     {
         $user = new User();
         $user->setDb($this->di->get("dbqb"));
@@ -155,12 +162,55 @@ class QuestionController implements ContainerInjectableInterface
             if (count($item)) {
                 foreach ($item as $comment) {
                     $user->findWhere("id = ?", $comment->uid);
-                    $comment->acronym = $user->acronym;             }
+                    $comment->acronym = $user->acronym;
+                    $comment->gravatar = $user->gravatar;
+                }
             }
         }
         return $items;
     }
 
+
+    /**
+     * Parse the text to markdown
+     *
+     * @return $items, an array of items.
+     */
+    private function parseTextMarkdown($items)
+    {
+        if (gettype($items) === "object") {
+            $item = $items;
+            $item->text = $this->markdown($item->text);
+            return $item;
+        }
+
+        foreach ($items as $item) {
+            $item->text = $this->markdown($item->text);
+        }
+        return $items;
+    }
+
+
+    /**
+     * Parse the text to markdown
+     *
+     * @return $items, an array of items.
+     */
+    private function parseTextMarkdownAnswerComment($items)
+    {
+        foreach ($items as $item) {
+            if (count($item)) {
+                foreach ($item as $comment) {
+                    $comment->text = $this->markdown($comment->text);
+                }
+            }
+        }
+        return $items;
+    }
+
+    private function dateSort($a, $b) {
+        return strtotime($b->time) - strtotime($a->time);
+    }
 
     /**
      * Show all items.
@@ -175,15 +225,22 @@ class QuestionController implements ContainerInjectableInterface
 
         $questions = $question->findAll();
 
+        // Order by time, show newest first.
+        usort($questions, array($this, "dateSort"));
+
         // Get the usernames.
-        $questions = $this->addUserAcronym($questions);
+        $questions = $this->addUserData($questions);
+
+        foreach ($questions as $question) {
+            $question->text = $this->markdown($question->text);
+        }
 
         $page->add("question/crud/view-all", [
             "items" => $questions,
         ]);
 
         return $page->render([
-            "title" => "A collection of items",
+            "title" => "Questions",
         ]);
     }
 
@@ -209,7 +266,7 @@ class QuestionController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "Create a item",
+            "title" => "Ask a question",
         ]);
     }
 
@@ -244,7 +301,7 @@ class QuestionController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "Delete an item",
+            "title" => "Delete a question",
         ]);
     }
 
@@ -281,10 +338,34 @@ class QuestionController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "Update an item",
+            "title" => "Update a question",
         ]);
     }
 
+    // /**
+    //  * Callback what to do if the form was unsuccessfully submitted, this
+    //  * happen when the submit callback method returns false or if validation
+    //  * fails. This method can/should be implemented by the subclass for a
+    //  * different behaviour.
+    //  */
+    // public function callbackFail()
+    // {
+    //     $this->di->get("response")->redirectSelf()->send();
+    // }
+
+    /**
+     * Format text according to Markdown syntax.
+     *
+     * @param string $text The text that should be formatted.
+     *
+     * @return string as the formatted html text.
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
+    private function markdown($text)
+    {
+        return Markdown::defaultTransform(htmlentities($text));
+    }
 
     /**
      * Adding an optional catchAll() method will catch all actions sent to the

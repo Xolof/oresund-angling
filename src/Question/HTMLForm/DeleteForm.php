@@ -5,6 +5,7 @@ namespace Xolof\Question\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Xolof\Question\Question;
+use Xolof\Question\TagToQuestion;
 
 /**
  * Form to delete an item.
@@ -30,7 +31,7 @@ class DeleteForm extends FormModel
             ],
             [
                 "text" => [
-                    "type"        => "text",
+                    "type" => "textarea",
                     "label"       => "Question to delete:",
                     "value"       => $question->text,
                     "readonly"    => true,
@@ -38,7 +39,7 @@ class DeleteForm extends FormModel
 
                 "submit" => [
                     "type" => "submit",
-                    "value" => "Delete item",
+                    "value" => "Delete question",
                     "callback" => [$this, "callbackSubmit"]
                 ],
             ]
@@ -80,6 +81,11 @@ class DeleteForm extends FormModel
         $question->setDb($this->di->get("dbqb"));
         $question->find("id", $this->itemId);
         $question->delete();
+
+        $tagToQuestion = new TagToQuestion();
+        $tagToQuestion->setDb($this->di->get("dbqb"));
+        $tagToQuestion->deleteWhere("qid = ?", $this->itemId);
+
         return true;
     }
 

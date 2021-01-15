@@ -17,29 +17,48 @@ $activeUser = $this->di->session->get("user_id");
 ?>
 
 <div class="question">
-    <!-- The user should be required to set a title for the question  -->
-    <h2>Question <?= $question->id ?></h2>
-    <p><?= htmlentities($question->text) ?></p>
-    <p><a href="user/<?= $question->uid ?>"><?= htmlentities($question->acronym) ?></a> <span class="time"><?= htmlentities($question->time) ?></span></p>
-    <p>
+    <p><?= $question->text ?></p>
+    <p class="question-answer-comment-info">
+        <span class="gravatar-view-one"><?= $question->gravatar ?></span>
+        <span  class="acronym">
+            <a href="<?= url("user/show/$question->uid") ?>">
+                <span><?= htmlentities($question->acronym) ?></span>
+            </a>
+        </span>
+        <span class="time">
+            <span><?= htmlentities($question->time) ?></span>
+        </span>
+    </p>
+    <p class="question-edit-delete-para">
         <?php if($activeUser === $question->uid): ?>
             <a href="<?= url("question/update/$question->id") ?>"  class="edit-delete-link">Edit</a>
-            | <a href="<?= url("question/delete/$question->id") ?>"  class="edit-delete-link">Delete</a>
+            <a href="<?= url("question/delete/$question->id") ?>"  class="edit-delete-link">Delete</a>
         <?php endif ?>
     </p>
-    <p>
-        <a href="<?= url("answer/create/$question->id") ?>" class="answer-comment-link">Add an answer</a>
-    </p>
 </div>
+
+<p class="answer-comment-link-para">
+    <a href="<?= url("answer/create/$question->id") ?>" class="answer-comment-link">Add an answer</a>
+</p>
 
 <div class="qComments">
     <?php foreach($qComments as $qComment): ?>
         <div class="qComment">
-            <p><?= htmlentities($qComment->text) ?></p>
-            <p><a href="user/<?= $qComment->uid ?>"><?= htmlentities($qComment->acronym) ?></a> <span class="time"><?= htmlentities($qComment->time) ?></span></p>
+            <p><?= $qComment->text ?></p>
+            <p class="question-answer-comment-info">
+                <span class="gravatar-view-one"><?= $qComment->gravatar ?></span>
+                <span class="acronym">
+                    <a href="<?= url("user/show/$qComment->uid") ?>">
+                        <span><?= htmlentities($qComment->acronym) ?></span>
+                    </a>
+                </span>
+                <span class="time">
+                    <span><?= htmlentities($qComment->time) ?></span>
+                </span>
+            </p>
             <?php if($activeUser === $qComment->uid): ?>
                 <a href="<?= url("question-comment/update/$qComment->id") ?>"  class="edit-delete-link">Edit</a>
-                | <a href="<?= url("question-comment/delete/$qComment->id") ?>"  class="edit-delete-link">Delete</a>
+                <a href="<?= url("question-comment/delete/$qComment->id") ?>"  class="edit-delete-link">Delete</a>
             <?php endif ?>
         </div>
     <?php endforeach ?>
@@ -48,22 +67,44 @@ $activeUser = $this->di->session->get("user_id");
 
 <?php foreach($answers as $answer): ?>
     <div class="answer">
-        <p><?= htmlentities($answer->text) ?></p>
-        <p><a href="user/<?= $answer->uid ?>"><?= htmlentities($answer->acronym) ?></a> <span class="time"><?= htmlentities($answer->time) ?></span></p>
+        <p><?= $answer->text ?></p>
+        <p class="question-answer-comment-info">
+            <span class="gravatar-view-one"><?= $answer->gravatar ?></span>
+            <span class="acronym">
+                <a href="<?= url("user/show/$answer->uid") ?>">
+                    <span><?= htmlentities($answer->acronym) ?></span>
+                </a>
+            </span>
+            <span class="time">
+                <span><?= htmlentities($answer->time) ?></span>
+            </span>
+        </p>
         <?php if($activeUser === $answer->uid): ?>
             <a href="<?= url("answer/update/$answer->id") ?>"  class="edit-delete-link">Edit</a>
-            | <a href="<?= url("answer/delete/$answer->id") ?>"  class="edit-delete-link">Delete</a>
+            <a href="<?= url("answer/delete/$answer->id") ?>"  class="edit-delete-link">Delete</a>
         <?php endif ?>
     </div>
 
     <div class="aComments">
         <?php foreach($aComments["answer $answer->id"] as $aComment): ?>
             <div class="aComment">
-                <p><?= htmlentities($aComment->text) ?></p>
-                <p><a href="user/<?= $aComment->uid ?>"><?= htmlentities($aComment->acronym) ?></a> <span class="time"><?= htmlentities($aComment->time) ?></span></p>
+                <p><?= $aComment->text ?></p>
+                <p class="question-answer-comment-info">
+                    <span class="gravatar-view-one"><?= $aComment->gravatar ?></span>
+                    <span class="acronym">
+                        <a href="<?= url("user/show/$aComment->uid") ?>">
+                            <span><?= htmlentities($aComment->acronym) ?></span>
+                        </a>
+                    </span>
+                    <span class="time">
+                        <span>
+                            <?= htmlentities($aComment->time) ?>
+                        </span>
+                    </span>
+                </p>
                 <?php if($activeUser === $aComment->uid): ?>
                     <a href="<?= url("answer-comment/update/$aComment->id") ?>"  class="edit-delete-link">Edit</a>
-                    | <a href="<?= url("answer-comment/delete/$aComment->id") ?>"  class="edit-delete-link">Delete</a>
+                    <a href="<?= url("answer-comment/delete/$aComment->id") ?>"  class="edit-delete-link">Delete</a>
                 <?php endif ?>
             </div>
         <?php endforeach ?>

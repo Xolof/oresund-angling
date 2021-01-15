@@ -29,13 +29,13 @@ class CreateForm extends FormModel
             ],
             [
                 "text" => [
-                    "type" => "text",
+                    "type" => "textarea",
                     "validation" => ["not_empty"],
                 ],
 
                 "submit" => [
                     "type" => "submit",
-                    "value" => "Create item",
+                    "value" => "Submit",
                     "callback" => [$this, "callbackSubmit"]
                 ],
             ]

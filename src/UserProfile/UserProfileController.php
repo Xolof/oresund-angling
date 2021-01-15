@@ -1,14 +1,14 @@
 <?php
 
-namespace Xolof\Answer;
+namespace Xolof\UserProfile;
 
 use Anax\Commons\ContainerInjectableInterface;
 use Anax\Commons\ContainerInjectableTrait;
-use Xolof\Answer\HTMLForm\CreateForm;
-use Xolof\Answer\HTMLForm\EditForm;
-use Xolof\Answer\HTMLForm\DeleteForm;
-use Xolof\Answer\HTMLForm\UpdateForm;
-use Xolof\Question\Question;
+use Xolof\UserProfile\HTMLForm\CreateForm;
+use Xolof\UserProfile\HTMLForm\EditForm;
+use Xolof\UserProfile\HTMLForm\DeleteForm;
+use Xolof\UserProfile\HTMLForm\UpdateForm;
+use Anax\User\User;
 
 // use Anax\Route\Exception\ForbiddenException;
 // use Anax\Route\Exception\NotFoundException;
@@ -17,7 +17,7 @@ use Xolof\Question\Question;
 /**
  * A sample controller to show how a controller class can be implemented.
  */
-class AnswerController implements ContainerInjectableInterface
+class UserProfileController implements ContainerInjectableInterface
 {
     use ContainerInjectableTrait;
     use \Xolof\Item\Item;
@@ -28,7 +28,7 @@ class AnswerController implements ContainerInjectableInterface
     //private $data;
 
 
-
+    //
     // /**
     //  * The initialize method is optional and will always be called before the
     //  * target method/action. This is a convienient method where you could
@@ -43,80 +43,6 @@ class AnswerController implements ContainerInjectableInterface
 
 
     /**
-     * Handler with form to create a new item.
-     *
-     * @return object as a response object
-     */
-    public function createAction($qid) : object
-    {
-        if (!$this->di->session->get("user_id")) {
-            return $this->di->response->redirect("user");
-        };
-
-        $question = new Question();
-        $question->setDb($this->di->get("dbqb"));
-        $questions = $question->findAllWhere("id = ?", $qid);
-
-        $page = $this->di->get("page");
-
-        if (!$questions) {
-            $page->add("default/404");
-
-            return $page->render([
-                "title" => "404 - not found",
-            ]);
-        }
-
-        $form = new CreateForm($this->di, $qid);
-        $form->check();
-
-        $page->add("answer/crud/create", [
-            "form" => $form->getHTML(),
-        ]);
-
-        return $page->render([
-            "title" => "Add an answer",
-        ]);
-    }
-
-
-
-    /**
-     * Handler with form to delete an item.
-     *
-     * @return object as a response object
-     */
-    public function deleteAction($id) : object
-    {
-        // Check if the item with $id belongs to the user with $uid.
-        $uid = $this->di->session->get("user_id");
-
-        if (!$this->isUsersItem(new Answer(), $id, $uid)) {
-            $page = $this->di->get("page");
-
-            $page->add("default/403");
-
-            return $page->render([
-                "title" => "403 Forbidden",
-            ]);
-        };
-
-        $page = $this->di->get("page");
-        $form = new DeleteForm($this->di, $id);
-        $form->check();
-
-        $page->add("answer/crud/delete", [
-            "form" => $form->getHTML(),
-        ]);
-
-        return $page->render([
-            "title" => "Delete an answer",
-        ]);
-    }
-
-
-
-    /**
      * Handler with form to update an item.
      *
      * @param int $id the id to update.
@@ -128,7 +54,7 @@ class AnswerController implements ContainerInjectableInterface
         // Check if the item with $id belongs to the user with $uid.
         $uid = $this->di->session->get("user_id");
 
-        if (!$this->isUsersItem(new Answer(), $id, $uid)) {
+        if (!$this->isUsersItem(new UserProfile(), $id, $uid)) {
             $page = $this->di->get("page");
 
             $page->add("default/403");
@@ -142,12 +68,12 @@ class AnswerController implements ContainerInjectableInterface
         $form = new UpdateForm($this->di, $id);
         $form->check();
 
-        $page->add("answer/crud/update", [
+        $page->add("user-profile/update", [
             "form" => $form->getHTML(),
         ]);
 
         return $page->render([
-            "title" => "Update an answer",
+            "title" => "Update an item",
         ]);
     }
 

@@ -31,7 +31,7 @@ class UpdateForm extends FormModel
             ],
             [
                 "text" => [
-                    "type" => "text",
+                    "type" => "textarea",
                     "validation" => ["not_empty"],
                     "value" => $this->questionComment->text,
                 ],

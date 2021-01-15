@@ -6991,9 +6991,7 @@ table .book-link:hover {
   border: 2px solid #33f;
 }
 .selected {
-  color: #eeeeee;
-  text-shadow: 1px 1px 1px #000;
-  background: #807ea8;
+  text-decoration: underline;
 }
 .question {
   border-bottom: 1px solid #ccc;
@@ -7003,13 +7001,13 @@ table .book-link:hover {
 }
 .qComments,
 .aComments {
-  margin-left: 24px;
+  margin-left: 48px;
   font-size: 0.9em;
 }
 .qComment,
 .aComment {
   border-bottom: 1px solid #e4e2e2;
-  padding: 0 2px;
+  padding: 0.4em 2px;
 }
 .qComment .time,
 .aComment .time {
@@ -7034,6 +7032,15 @@ table .book-link:hover {
 .edit-delete-link:hover {
   color: #33f;
 }
+.answer-comment-link-para {
+  margin-bottom: 0.4em;
+}
+.edit-delete-link {
+  margin-right: 0.4em;
+}
+.question-edit-delete-para {
+  margin-bottom: 0;
+}
 .message {
   text-align: center;
   color: blue;
@@ -7044,4 +7051,20 @@ table .book-link:hover {
 }
 .logged_in {
   text-align: center;
+}
+.gravatar-view-one {
+  display: inline-block;
+  width: 60px;
+  height: auto;
+}
+.question-answer-comment-info {
+  display: flex;
+}
+.question-answer-comment-info .acronym {
+  margin-left: 1em;
+}
+textarea#form-element-text {
+  resize: vertical;
+  min-height: 10em;
+  max-height: 30em;
 }

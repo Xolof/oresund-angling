@@ -17,10 +17,6 @@ $urlToView = url("answer-comment");
 
 
 
-?><h1>Update an item</h1>
+?><h1>Update a comment</h1>
 
 <?= $form ?>
-
-<p>
-    <a href="<?= $urlToView ?>">View all</a>
-</p>

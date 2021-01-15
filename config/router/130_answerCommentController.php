@@ -5,9 +5,9 @@
 return [
     "routes" => [
         [
-            "info" => "Controller for answer.",
-            "mount" => "question-comment",
-            "handler" => "\Xolof\QuestionComment\QuestionCommentController",
+            "info" => "Controller for user profiles.",
+            "mount" => "user-profile",
+            "handler" => "\Xolof\UserProfile\UserProfileController",
         ],
     ]
 ];

@@ -318,9 +318,7 @@ table {
 }
 
 .selected {
-    color: #eeeeee;
-    text-shadow: 1px 1px 1px #000;
-    background: #807ea8;
+    text-decoration: underline;
 }
 
 .question {
@@ -331,13 +329,13 @@ table {
 }
 
 .qComments, .aComments {
-    margin-left: @magicNumber;
+    margin-left: @magicNumber * 2;
     font-size: 0.9em;
 }
 
 .qComment, .aComment {
     border-bottom: 1px solid #e4e2e2;
-    padding: 0 2px;
+    padding: 0.4em 2px;
     .time {
         margin-left: 1em;
     }
@@ -362,6 +360,18 @@ table {
     }
 }
 
+.answer-comment-link-para {
+    margin-bottom: 0.4em;
+}
+
+.edit-delete-link {
+    margin-right: 0.4em;
+}
+
+.question-edit-delete-para {
+    margin-bottom: 0;
+}
+
 .message {
     text-align: center;
     color: blue;
@@ -374,4 +384,26 @@ table {
 
 .logged_in {
     text-align: center;
+}
+
+.gravatar-view-one {
+    display: inline-block;
+    width: 60px;
+    height: auto;
+}
+
+.question-answer-comment-info {
+    display: flex;
+    .gravatar-view-one {
+    }
+
+    .acronym {
+        margin-left: 1em;
+    }
+}
+
+textarea#form-element-text {
+    resize: vertical;
+    min-height: 10em;
+    max-height: 30em;
 }

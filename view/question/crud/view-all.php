@@ -10,19 +10,9 @@ namespace Anax\View;
 //echo showEnvironment(get_defined_vars());
 
 // Gather incoming variables and use default values if not set
-$items = isset($items) ? $items : null;
-
-// Create urls for navigation
-$urlToCreate = url("question/create");
-$urlToDelete = url("question/delete");
-
-
+// $items = isset($items) ? $items : null;
 
 ?><h1>Questions</h1>
-
-<h2>
-    <a href="<?= $urlToCreate ?>">Ask a question</a>
-</h2>
 
 <?php if (!$items) : ?>
     <p>There are no items to show.</p>
@@ -33,11 +23,13 @@ endif;
 
 <?php foreach ($items as $item) : ?>
 <div class="view-all-item">
-    <h3>
-        <a href="<?= url("question/show/{$item->id}"); ?>">Question heading</a>
-    </h3>
-    <p><?= htmlentities($item->text) ?></p>
-    <p>Asked by <?= htmlentities($item->acronym) ?></p>
-    <p><?= htmlentities($item->time) ?></p>
+    <p><?= $item->text ?></p>
+    <p>
+        Asked by <a href="<?= url("user/show/$item->uid") ?>"><?= htmlentities($item->acronym) ?></a>
+        <?= htmlentities($item->time) ?>
+    </p>
+    <p>
+        <a href="<?= url("question/show/{$item->id}"); ?>">Read more</a>
+    </p>
 </div>
 <?php endforeach; ?>

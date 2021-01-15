@@ -41,29 +41,6 @@ class QuestionCommentController implements ContainerInjectableInterface
     // }
 
 
-
-    /**
-     * Show all items.
-     *
-     * @return object as a response object
-     */
-    public function indexActionGet() : object
-    {
-        $page = $this->di->get("page");
-        $questionComment = new QuestionComment();
-        $questionComment->setDb($this->di->get("dbqb"));
-
-        $page->add("questionComment/crud/view-all", [
-            "items" => $questionComment->findAll(),
-        ]);
-
-        return $page->render([
-            "title" => "A collection of items",
-        ]);
-    }
-
-
-
     /**
      * Handler with form to create a new item.
      *
@@ -84,7 +61,7 @@ class QuestionCommentController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "Create a item",
+            "title" => "Add a comment",
         ]);
     }
 
@@ -119,7 +96,7 @@ class QuestionCommentController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "Delete an item",
+            "title" => "Delete a comment",
         ]);
     }
 
@@ -156,7 +133,7 @@ class QuestionCommentController implements ContainerInjectableInterface
         ]);
 
         return $page->render([
-            "title" => "Update an item",
+            "title" => "Update a comment",
         ]);
     }
 

@@ -30,7 +30,7 @@ class DeleteForm extends FormModel
             ],
             [
                 "text" => [
-                    "type"        => "text",
+                    "type" => "textarea",
                     "label"       => "Answer to delete:",
                     "value"       => $this->answer->text,
                     "readonly"    => true,
@@ -38,7 +38,7 @@ class DeleteForm extends FormModel
 
                 "submit" => [
                     "type" => "submit",
-                    "value" => "Delete item",
+                    "value" => "Delete answer",
                     "callback" => [$this, "callbackSubmit"]
                 ],
             ]

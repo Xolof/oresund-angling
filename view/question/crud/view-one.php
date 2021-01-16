@@ -58,6 +58,9 @@ $activeUser = $this->di->session->get("user_id");
                 <span class="time">
                     <span><?= htmlentities($qComment->time) ?></span>
                 </span>
+                <?php if ($qComment->updated): ?>
+                    <span class="updated">(Updated <?= $qComment->updated ?>)</span>
+                <?php endif ?>
             </p>
             <?php if($activeUser === $qComment->uid): ?>
                 <a href="<?= url("question-comment/update/$qComment->id") ?>"  class="edit-delete-link">Edit</a>
@@ -81,6 +84,9 @@ $activeUser = $this->di->session->get("user_id");
             <span class="time">
                 <span><?= htmlentities($answer->time) ?></span>
             </span>
+            <?php if ($answer->updated): ?>
+                <span class="updated">(Updated <?= $answer->updated ?>)</span>
+            <?php endif ?>
         </p>
         <?php if($activeUser === $answer->uid): ?>
             <a href="<?= url("answer/update/$answer->id") ?>"  class="edit-delete-link">Edit</a>
@@ -104,6 +110,9 @@ $activeUser = $this->di->session->get("user_id");
                             <?= htmlentities($aComment->time) ?>
                         </span>
                     </span>
+                    <?php if ($aComment->updated): ?>
+                        <span class="updated">(Updated <?= $aComment->updated ?>)</span>
+                    <?php endif ?>
                 </p>
                 <?php if($activeUser === $aComment->uid): ?>
                     <a href="<?= url("answer-comment/update/$aComment->id") ?>"  class="edit-delete-link">Edit</a>

@@ -28,6 +28,9 @@ $activeUser = $this->di->session->get("user_id");
         <span class="time">
             <span><?= htmlentities($question->time) ?></span>
         </span>
+        <?php if ($question->updated): ?>
+            <span class="updated">(Updated <?= $question->updated ?>)</span>
+        <?php endif ?>
     </p>
     <p class="question-edit-delete-para">
         <?php if($activeUser === $question->uid): ?>

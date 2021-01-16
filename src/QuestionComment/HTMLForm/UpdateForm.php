@@ -90,6 +90,7 @@ class UpdateForm extends FormModel
         $questionComment->qid  = $this->questionComment->qid;
         $questionComment->uid = $this->questionComment->uid;
         $questionComment->text = $this->questionComment->text;
+        $questionComment->updated = date("Y-m-d H:i:s", time());
         $questionComment->save();
         return true;
     }

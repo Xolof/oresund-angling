@@ -36,5 +36,7 @@ CREATE TABLE QuestionComment (
     `qid` INTEGER NOT NULL,
     `uid` INTEGER NOT NULL,
     `time` TIMESTAMP DEFAULT NOW() NOT NULL,
-    `text` TEXT NOT NULL
+    `text` TEXT NOT NULL,
+    `updated` TIMESTAMP NULL DEFAULT NULL,
+    `deleted` TIMESTAMP NULL DEFAULT NULL
 ) ENGINE INNODB CHARACTER SET utf8mb4 COLLATE utf8mb4_swedish_ci;

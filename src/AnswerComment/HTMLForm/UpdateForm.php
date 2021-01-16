@@ -96,6 +96,7 @@ class UpdateForm extends FormModel
         $answerComment->setDb($this->di->get("dbqb"));
         $answerComment->find("id", $this->itemId);
         $answerComment->text = $this->form->rawValue("text");
+        $answerComment->updated = date("Y-m-d H:i:s", time());
         $answerComment->save();
         return true;
     }

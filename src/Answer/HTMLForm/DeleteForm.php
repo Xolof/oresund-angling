@@ -80,7 +80,8 @@ class DeleteForm extends FormModel
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
         $answer->find("id", $this->itemId);
-        $answer->delete();
+        $answer->deleted = date("Y-m-d H:i:s", time());
+        $answer->save();
         return true;
     }
 

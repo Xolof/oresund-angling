@@ -123,6 +123,7 @@ class UpdateForm extends FormModel
         $question->find("id", $this->itemId);
         $question->uid  = $uid;
         $question->text = $this->form->rawValue("text");
+        $question->updated = date("Y-m-d H:i:s", time());
         $question->save();
 
         // Get the tags as comma separated values from the form.

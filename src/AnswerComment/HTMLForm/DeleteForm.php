@@ -90,7 +90,8 @@ class DeleteForm extends FormModel
         $answerComment = new AnswerComment();
         $answerComment->setDb($this->di->get("dbqb"));
         $answerComment->find("id", $this->answerComment->id);
-        $answerComment->delete();
+        $answerComment->deleted = date("Y-m-d H:i:s", time());
+        $answerComment->save();
         return true;
     }
 

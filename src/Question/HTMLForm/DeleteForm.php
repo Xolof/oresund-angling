@@ -5,6 +5,9 @@ namespace Xolof\Question\HTMLForm;
 use Anax\HTMLForm\FormModel;
 use Psr\Container\ContainerInterface;
 use Xolof\Question\Question;
+use Xolof\QuestionComment\QuestionComment;
+use Xolof\Answer\Answer;
+use Xolof\AnswerComment\AnswerComment;
 use Xolof\Question\TagToQuestion;
 
 /**
@@ -80,7 +83,40 @@ class DeleteForm extends FormModel
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
         $question->find("id", $this->itemId);
-        $question->delete();
+        $question->deleted = date("Y-m-d H:i:s", time());
+        $question->save();
+
+        //  Soft delete question comments
+        $questionComment = new QuestionComment();
+        $questionComment->setDb($this->di->get("dbqb"));
+        $qComments = $questionComment->findAllWhere("qid = ?", $this->itemId);
+        foreach ($qComments as $qComment) {
+            $qComment->setDb($this->di->get("dbqb"));
+            $qComment->deleted = date("Y-m-d H:i:s", time());
+            $qComment->save();
+        }
+
+        // Answers
+        $answer = new Answer();
+        $answer->setDb($this->di->get("dbqb"));
+        $answers = $answer->findAllWhere("qid = ?", $this->itemId);
+        foreach ($answers as $answer) {
+            $answer->setDb($this->di->get("dbqb"));
+            $answer->deleted = date("Y-m-d H:i:s", time());
+            $answer->save();
+        }
+
+        // For each answer, the answer comments
+        foreach ($answers as $item) {
+            $answerComment = new AnswerComment();
+            $answerComment->setDb($this->di->get("dbqb"));
+            $aComments = $answerComment->findAllWhere("aid = ?", $item->id);
+            foreach ($aComments as $aComment) {
+                $aComment->setDb($this->di->get("dbqb"));
+                $aComment->deleted = date("Y-m-d H:i:s", time());
+                $aComment->save();
+            }
+        }
 
         $tagToQuestion = new TagToQuestion();
         $tagToQuestion->setDb($this->di->get("dbqb"));

@@ -6996,7 +6996,8 @@ table .book-link:hover {
 .question {
   border-bottom: 1px solid #ccc;
 }
-.question .time {
+.question .time,
+.question .updated {
   margin-left: 1em;
 }
 .qComments,
@@ -7010,13 +7011,16 @@ table .book-link:hover {
   padding: 0.4em 2px;
 }
 .qComment .time,
-.aComment .time {
+.aComment .time,
+.qComment .updated,
+.aComment .updated {
   margin-left: 1em;
 }
 .answer {
   border-bottom: 1px solid #ccc;
 }
-.answer .time {
+.answer .time,
+.answer .updated {
   margin-left: 1em;
 }
 .answer-comment-link,

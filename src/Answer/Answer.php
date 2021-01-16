@@ -26,4 +26,6 @@ class Answer extends ActiveRecordModel
     public $qid;
     public $time;
     public $text;
+    public $updated;
+    public $deleted;
 }

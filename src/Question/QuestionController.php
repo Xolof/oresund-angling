@@ -45,6 +45,48 @@ class QuestionController implements ContainerInjectableInterface
     //     ;
     // }
 
+
+    /**
+     * Show all items.
+     *
+     * @return object as a response object
+     */
+    public function indexActionGet() : object
+    {
+        $page = $this->di->get("page");
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+
+        $questions = $question->findAll();
+
+        // Order by time, show newest first.
+        usort($questions, array($this, "dateSort"));
+
+        // Get the usernames.
+        $questions = $this->addUserData($questions);
+
+        $notDeletedQuestions = [];
+
+        foreach ($questions as $question) {
+            // Parse to markdown
+            $question->text = $this->markdown($question->text);
+
+            // Filter out the deleted questions
+            if (!$question->deleted) {
+                $notDeletedQuestions[] = $question;
+            }
+        }
+
+        $page->add("question/crud/view-all", [
+            "items" => $notDeletedQuestions,
+        ]);
+
+        return $page->render([
+            "title" => "Questions",
+        ]);
+    }
+
+
     /**
      * This sample method action takes one argument:
      * GET mountpoint/argument/<value>
@@ -69,6 +111,14 @@ class QuestionController implements ContainerInjectableInterface
         $question->setDb($this->di->get("dbqb"));
         $q = $question->find("id", $id);
 
+        if ($q->deleted) {
+            $page->add("default/404");
+
+            return $page->render([
+                "title" => "404 - not found",
+            ]);
+        }
+
         $q = $this->addUserData($q);
         $q = $this->parseTextMarkdown($q);
 
@@ -76,6 +126,10 @@ class QuestionController implements ContainerInjectableInterface
         $questionComment = new QuestionComment();
         $questionComment->setDb($this->di->get("dbqb"));
         $qComments = $questionComment->findAllWhere("qid = ?", $question->id);
+        // Filter out the deleted comments.
+        $qComments = array_filter($qComments, function($comment) {
+            return $comment->deleted === null;
+        });
         // Get the usernames.
         $qComments = $this->addUserData($qComments);
         $qComments = $this->parseTextMarkdown($qComments);
@@ -84,6 +138,10 @@ class QuestionController implements ContainerInjectableInterface
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
         $answers = $answer->findAllWhere("qid = ?", $question->id);
+        // Filter out the deleted comments.
+        $answers = array_filter($answers, function($answer) {
+            return $answer->deleted === null;
+        });
         // Get the usernames.
         $answers = $this->addUserData($answers);
         $answers = $this->parseTextMarkdown($answers);
@@ -93,7 +151,11 @@ class QuestionController implements ContainerInjectableInterface
         foreach ($answers as $item) {
             $answerComment = new AnswerComment();
             $answerComment->setDb($this->di->get("dbqb"));
-            $aComments["answer $item->id"] = $answerComment->findAllWhere("aid = ?", $item->id);
+            $answercomments = $answerComment->findAllWhere("aid = ?", $item->id);
+            // Filter out the deleted comments.
+            $aComments["answer $item->id"] = array_filter($answercomments, function($answercomment) {
+                return $answercomment->deleted === null;
+            });
         }
 
         // Get the usernames.
@@ -210,38 +272,6 @@ class QuestionController implements ContainerInjectableInterface
 
     private function dateSort($a, $b) {
         return strtotime($b->time) - strtotime($a->time);
-    }
-
-    /**
-     * Show all items.
-     *
-     * @return object as a response object
-     */
-    public function indexActionGet() : object
-    {
-        $page = $this->di->get("page");
-        $question = new Question();
-        $question->setDb($this->di->get("dbqb"));
-
-        $questions = $question->findAll();
-
-        // Order by time, show newest first.
-        usort($questions, array($this, "dateSort"));
-
-        // Get the usernames.
-        $questions = $this->addUserData($questions);
-
-        foreach ($questions as $question) {
-            $question->text = $this->markdown($question->text);
-        }
-
-        $page->add("question/crud/view-all", [
-            "items" => $questions,
-        ]);
-
-        return $page->render([
-            "title" => "Questions",
-        ]);
     }
 
 

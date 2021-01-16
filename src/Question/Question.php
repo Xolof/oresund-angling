@@ -25,4 +25,6 @@ class Question extends ActiveRecordModel
     public $uid;
     public $time;
     public $text;
+    public $updated;
+    public $deleted;
 }

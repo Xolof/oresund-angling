@@ -12,7 +12,7 @@ return [
         "region" => "layout",
         "template" => "anax/v2/layout/dbwebb_se",
         "data" => [
-            "baseTitle" => " | Q&A Site",
+            "baseTitle" => " | Öresund fishing",
             "bodyClass" => null,
             "favicon" => "favicon.ico",
             "htmlClass" => null,
@@ -33,7 +33,7 @@ return [
             "template" => "anax/v2/header/site_logo",
             "data" => [
                 "class" => "large",
-                "siteLogo"      => "image/theme/leaf_256x256.png",
+                "siteLogo"      => "image/theme/logo.png",
                 "siteLogoAlt"   => "Löv",
             ],
         ],
@@ -42,8 +42,8 @@ return [
             "template" => "anax/v2/header/site_logo_text",
             "data" => [
                 "homeLink"      => "",
-                "siteLogoText"  => "Q&A Site",
-                "siteLogoTextIcon" => "image/theme/leaf_40x40.png",
+                "siteLogoText"  => "Öresund fishing",
+                "siteLogoTextIcon" => "image/theme/logo.png",
                 "siteLogoTextIconAlt" => "Löv-bild",
             ],
         ],

@@ -11,6 +11,11 @@ return [
     // Here comes the menu items
     "items" => [
         [
+            "text" => "Home",
+            "url" => "",
+            "title" => "Home.",
+        ],
+        [
             "text" => "Questions",
             "url" => "question",
             "title" => "Questions.",

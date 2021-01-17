@@ -86,6 +86,69 @@ class QuestionController implements ContainerInjectableInterface
         ]);
     }
 
+    /**
+     * Show questions with a specified tag.
+     *
+     * @return object as a response object
+     */
+    public function tagActionGet($tagParam) //: object
+    {
+        $page = $this->di->get("page");
+
+        $tagObj = new Tag();
+        $tagObj->setDb($this->di->get("dbqb"));
+        $tag = $tagObj->find("tag", $tagParam);
+
+        if (!$tag->id) {
+            $page->add("default/404");
+
+            return $page->render([
+                "title" => "404 - not found",
+            ]);
+        }
+
+        // Find the rows in TagToQuestion with the tag's id.
+        $tagToQuestion = new TagToQuestion();
+        $tagToQuestion->setDb($this->di->get("dbqb"));
+        $rows = $tagToQuestion->findAllWhere("tagid = ?", $tag->id);
+
+        $questions = [];
+
+        // Find the questions corresponding to each row.
+        foreach ($rows as $row) {
+            $question = new Question();
+            $question->setDb($this->di->get("dbqb"));
+            $questions[] = $question->find("id", $row->qid);
+        }
+
+        // Order by time, show newest first.
+        usort($questions, array($this, "dateSort"));
+
+        // Get the usernames.
+        $questions = $this->addUserData($questions);
+
+        $notDeletedQuestions = [];
+
+        foreach ($questions as $question) {
+            // Parse to markdown
+            $question->text = $this->markdown($question->text);
+
+            // Filter out the deleted questions
+            if (!$question->deleted) {
+                $notDeletedQuestions[] = $question;
+            }
+        }
+
+        $page->add("tag/questions-with-tag", [
+            "items" => $notDeletedQuestions,
+            "tag" => $tagParam
+        ]);
+
+        return $page->render([
+            "title" => "Tag '" . htmlentities($tagParam) . "'",
+        ]);
+    }
+
 
     /**
      * This sample method action takes one argument:
@@ -95,7 +158,7 @@ class QuestionController implements ContainerInjectableInterface
      *
      * @return string
      */
-    public function showActionGet($id) // : object
+    public function showActionGet($id) : object
     {
         $page = $this->di->get("page");
 
@@ -371,17 +434,6 @@ class QuestionController implements ContainerInjectableInterface
             "title" => "Update a question",
         ]);
     }
-
-    // /**
-    //  * Callback what to do if the form was unsuccessfully submitted, this
-    //  * happen when the submit callback method returns false or if validation
-    //  * fails. This method can/should be implemented by the subclass for a
-    //  * different behaviour.
-    //  */
-    // public function callbackFail()
-    // {
-    //     $this->di->get("response")->redirectSelf()->send();
-    // }
 
     /**
      * Format text according to Markdown syntax.

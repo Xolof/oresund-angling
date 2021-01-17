@@ -35,7 +35,8 @@ class CreateForm extends FormModel
                 ],
 
                 "tags" => [
-                    "type" => "text"
+                    "type" => "text",
+                    "placeholder" => "Tags separated by comma"
                 ],
 
                 "submit" => [
@@ -75,7 +76,10 @@ class CreateForm extends FormModel
         $tags = explode(",", $this->form->rawValue("tags"));
 
         foreach ($tags as $tagStr) {
-            $tagStr = preg_replace("/[^A-Za-z0-9]/", '', trim($tagStr));
+            if ($tagStr === "") {
+                continue;
+            }
+            $tagStr = preg_replace("/[^A-Za-zÅÄÖØÆåäöøæ0-9]/", '', trim($tagStr));
 
             $tag = new Tag();
             $tag->setDb($this->di->get("dbqb"));

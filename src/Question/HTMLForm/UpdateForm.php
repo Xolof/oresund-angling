@@ -41,7 +41,8 @@ class UpdateForm extends FormModel
 
                 "tags" => [
                     "type" => "text",
-                    "value" => $tags
+                    "value" => $tags,
+                    "placeholder" => "Tags separated by comma"
                 ],
 
                 "submit" => [
@@ -131,18 +132,20 @@ class UpdateForm extends FormModel
         $newTags = [];
 
         foreach ($rawNewTags as $tagStr) {
+            if ($tagStr === "") {
+                continue;
+            }
             $trimmed = trim($tagStr);
-            $newTags[] = preg_replace("/[^A-Za-z0-9]/", '', $trimmed);
+            $newTags[] = preg_replace("/[^A-Za-zÅÄÖØÆåäöøæ0-9]/", '', $trimmed);
         }
 
 
         foreach ($newTags as $tagStr) {
-
             $tag = new Tag();
             $tag->setDb($this->di->get("dbqb"));
 
+            // If the tag doesn't exist, save it.
             if (!$tag->find("tag", $tagStr)->id) {
-                // Save the tag.
                 $tag = new Tag();
                 $tag->setDb($this->di->get("dbqb"));
                 $tag->tag = $tagStr;
@@ -150,12 +153,12 @@ class UpdateForm extends FormModel
             }
 
             $tagId = $tag->find("tag", $tagStr)->id;
-
             $tagToQuestion = new TagToQuestion();
             $tagToQuestion->setDb($this->di->get("dbqb"));
 
-            if (!$tagToQuestion->find("tagid", $tagId)->id) {
-                // Write to help-table TagToQuestion.
+            // If there's not a row for this tag and this question,
+            // insert a row in  the table TagToQuestion.
+            if (!$tagToQuestion->findWhere("tagid = ? AND qid = ?", [$tagId, $this->itemId])->id) {
                 $newTTQ = new TagToQuestion();
                 $newTTQ->setDb($this->di->get("dbqb"));
                 $newTTQ->tagid = $tag->id;

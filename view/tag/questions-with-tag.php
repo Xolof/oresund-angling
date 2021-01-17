@@ -12,7 +12,7 @@ namespace Anax\View;
 // Gather incoming variables and use default values if not set
 // $items = isset($items) ? $items : null;
 
-?><h1>Questions</h1>
+?><h1>Questions with tag "<?= htmlentities($tag) ?>"</h1>
 
 <?php if (!$items) : ?>
     <p>There are no items to show.</p>

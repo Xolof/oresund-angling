@@ -10,11 +10,30 @@ A forum for asking questions. This is a project from the course ramverk1 at Blek
 
 ## How to install
 
+### Clone the repo
+
+Git clone...
+
 ### Database
 
-In your Mysql or MariaDb client enter:
+Enter your mysql client
+`mysql -u<USER> -p<password>`
+
+Then create the database.
 `CREATE DATABASE IF NOT EXISTS qadb;
 USE qadb;`
 
-Run the bash script creating tables.
-``
+Read the sql-files to create tables.
+`source sql/ddl/answer_mysql.sql;
+source sql/ddl/question_mysql.sql;
+source sql/ddl/answer-comment_mysql.sql;
+source sql/ddl/question-comment_mysql.sql;
+source sql/ddl/user_mysql.sql;
+source sql/ddl/user-profile_mysql.sql;
+source sql/ddl/tag_mysql.sql;
+source sql/ddl/tag-to-question_mysql.sql;`
+
+### Composer
+
+Install dependencies using composer.
+`composer install`

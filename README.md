@@ -1,6 +1,6 @@
 # oresund-angling
 
-[![xolof](https://circleci.com/gh/circleci/oresund-angling.svg?style=svg)](https://app.circleci.com/pipelines/github/Xolof/oresund-angling)
+[![Xolof](https://circleci.com/gh/xolof/oresund-angling.svg?style=svg)](https://app.circleci.com/pipelines/github/Xolof/oresund-angling)
 
 
 A forum for asking questions. This is a project from the course ramverk1 at Blekinge Institute of Technology.

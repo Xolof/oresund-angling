@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Supply the basis for the navbar as an array.
  */

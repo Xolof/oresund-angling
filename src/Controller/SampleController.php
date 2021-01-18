@@ -38,7 +38,7 @@ class SampleController implements ContainerInjectableInterface
      *
      * @return void
      */
-    public function initialize() : void
+    public function initialize(): void
     {
         // Use to initialise member variables.
         $this->db = "active";
@@ -54,7 +54,7 @@ class SampleController implements ContainerInjectableInterface
      *
      * @return string
      */
-    public function indexAction() : string
+    public function indexAction(): string
     {
         // Deal with the action and return a response.
         return __METHOD__ . ", \$db is {$this->db}";
@@ -68,7 +68,7 @@ class SampleController implements ContainerInjectableInterface
      *
      * @return string
      */
-    public function dumpDiActionGet() : string
+    public function dumpDiActionGet(): string
     {
         // Deal with the action and return a response.
         $services = implode(", ", $this->di->getServices());
@@ -84,7 +84,7 @@ class SampleController implements ContainerInjectableInterface
      *
      * @return string
      */
-    public function infoActionGet() : string
+    public function infoActionGet(): string
     {
         // Deal with the action and return a response.
         return __METHOD__ . ", \$db is {$this->db}";
@@ -98,7 +98,7 @@ class SampleController implements ContainerInjectableInterface
      *
      * @return string
      */
-    public function createActionGet() : string
+    public function createActionGet(): string
     {
         // Deal with the action and return a response.
         return __METHOD__ . ", \$db is {$this->db}";
@@ -112,7 +112,7 @@ class SampleController implements ContainerInjectableInterface
      *
      * @return string
      */
-    public function createActionPost() : string
+    public function createActionPost(): string
     {
         // Deal with the action and return a response.
         return __METHOD__ . ", \$db is {$this->db}";
@@ -128,7 +128,7 @@ class SampleController implements ContainerInjectableInterface
      *
      * @return string
      */
-    public function argumentActionGet($value) : string
+    public function argumentActionGet($value): string
     {
         // Deal with the action and return a response.
         return __METHOD__ . ", \$db is {$this->db}, got argument '$value'";
@@ -147,7 +147,7 @@ class SampleController implements ContainerInjectableInterface
      *
      * @return string
      */
-    public function defaultArgumentActionGet($value = "default") : string
+    public function defaultArgumentActionGet($value = "default"): string
     {
         // Deal with the action and return a response.
         return __METHOD__ . ", \$db is {$this->db}, got argument '$value'";
@@ -168,7 +168,7 @@ class SampleController implements ContainerInjectableInterface
      *
      * @return string
      */
-    public function typedArgumentActionGet(string $str, int $int) : string
+    public function typedArgumentActionGet(string $str, int $int): string
     {
         // Deal with the action and return a response.
         return __METHOD__ . ", \$db is {$this->db}, got string argument '$str' and int argument '$int'.";
@@ -188,7 +188,7 @@ class SampleController implements ContainerInjectableInterface
      *
      * @return string
      */
-    public function variadicActionGet(...$value) : string
+    public function variadicActionGet(...$value): string
     {
         // Deal with the action and return a response.
         return __METHOD__ . ", \$db is {$this->db}, got '" . count($value) . "' arguments: " . implode(", ", $value);

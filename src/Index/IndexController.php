@@ -49,7 +49,7 @@ class IndexController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function indexActionGet() : object
+    public function indexActionGet(): object
     {
         $page = $this->di->get("page");
         $question = new Question();
@@ -123,8 +123,8 @@ class IndexController implements ContainerInjectableInterface
             // Get all QuestionComments made by the user.
             $questionComment = new QuestionComment();
             $questionComment->setDb($this->di->get("dbqb"));
-            $usersQuestionComments = $questionComment->findAllWhere("uid = ?", $user->id);
-            $score += count($usersQuestionComments);
+            $usersQComments = $questionComment->findAllWhere("uid = ?", $user->id);
+            $score += count($usersQComments);
 
             // Get all Answers made by the user.
             $answer = new Answer();
@@ -152,8 +152,9 @@ class IndexController implements ContainerInjectableInterface
     }
 
 
-    private function sortByUserScore($a, $b) {
-        return $b["score"] - $a["score"];
+    private function sortByUserScore($alpha, $bravo)
+    {
+        return $bravo["score"] - $alpha["score"];
     }
 
 
@@ -189,8 +190,9 @@ class IndexController implements ContainerInjectableInterface
         return array_slice($tagsWithNumRows, 0, 10);
     }
 
-    private function numRowsSort($a, $b) {
-        return $b["numRows"] - $a["numRows"];
+    private function numRowsSort($alpha, $bravo)
+    {
+        return $bravo["numRows"] - $alpha["numRows"];
     }
 
     /**
@@ -233,27 +235,9 @@ class IndexController implements ContainerInjectableInterface
         return Markdown::defaultTransform(htmlentities($text));
     }
 
-    /**
-     * Parse the text to markdown
-     *
-     * @return $items, an array of items.
-     */
-    private function parseTextMarkdown($items)
+
+    private function dateSort($alpha, $bravo)
     {
-        if (gettype($items) === "object") {
-            $item = $items;
-            $item->text = $this->markdown($item->text);
-            return $item;
-        }
-
-        foreach ($items as $item) {
-            $item->text = $this->markdown($item->text);
-        }
-        return $items;
-    }
-
-
-    private function dateSort($a, $b) {
-        return strtotime($b->time) - strtotime($a->time);
+        return strtotime($bravo->time) - strtotime($alpha->time);
     }
 }

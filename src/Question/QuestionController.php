@@ -51,7 +51,7 @@ class QuestionController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function indexActionGet() : object
+    public function indexActionGet(): object
     {
         $page = $this->di->get("page");
         $question = new Question();
@@ -158,7 +158,7 @@ class QuestionController implements ContainerInjectableInterface
      *
      * @return string
      */
-    public function showActionGet($id) : object
+    public function showActionGet($id): object
     {
         $page = $this->di->get("page");
 
@@ -170,11 +170,11 @@ class QuestionController implements ContainerInjectableInterface
             ]);
         }
         // Try to find questions with $id
-        $question = new Question();
-        $question->setDb($this->di->get("dbqb"));
-        $q = $question->find("id", $id);
+        $questionObj = new Question();
+        $questionObj->setDb($this->di->get("dbqb"));
+        $question = $questionObj->find("id", $id);
 
-        if ($q->deleted) {
+        if ($question->deleted) {
             $page->add("default/404");
 
             return $page->render([
@@ -182,15 +182,15 @@ class QuestionController implements ContainerInjectableInterface
             ]);
         }
 
-        $q = $this->addUserData($q);
-        $q = $this->parseTextMarkdown($q);
+        $question = $this->addUserData($question);
+        $question = $this->parseTextMarkdown($question);
 
         // Try to find comments for the question
         $questionComment = new QuestionComment();
         $questionComment->setDb($this->di->get("dbqb"));
         $qComments = $questionComment->findAllWhere("qid = ?", $question->id);
         // Filter out the deleted comments.
-        $qComments = array_filter($qComments, function($comment) {
+        $qComments = array_filter($qComments, function ($comment) {
             return $comment->deleted === null;
         });
         // Get the usernames.
@@ -202,7 +202,7 @@ class QuestionController implements ContainerInjectableInterface
         $answer->setDb($this->di->get("dbqb"));
         $answers = $answer->findAllWhere("qid = ?", $question->id);
         // Filter out the deleted comments.
-        $answers = array_filter($answers, function($answer) {
+        $answers = array_filter($answers, function ($answer) {
             return $answer->deleted === null;
         });
         // Get the usernames.
@@ -216,7 +216,7 @@ class QuestionController implements ContainerInjectableInterface
             $answerComment->setDb($this->di->get("dbqb"));
             $answercomments = $answerComment->findAllWhere("aid = ?", $item->id);
             // Filter out the deleted comments.
-            $aComments["answer $item->id"] = array_filter($answercomments, function($answercomment) {
+            $aComments["answer $item->id"] = array_filter($answercomments, function ($answercomment) {
                 return $answercomment->deleted === null;
             });
         }
@@ -225,7 +225,7 @@ class QuestionController implements ContainerInjectableInterface
         $aComments = $this->addUserDataAnswerComment($aComments);
         $aComments = $this->parseTextMarkdownAnswerComment($aComments);
 
-        if (!$q->id) {
+        if (!$question->id) {
             $page->add("default/404");
 
             return $page->render([
@@ -234,7 +234,7 @@ class QuestionController implements ContainerInjectableInterface
         }
         $page->add("question/crud/view-one", [
             "data" => [
-                "question" => $q,
+                "question" => $question,
                 "qComments" => $qComments,
                 "answers" => $answers,
                 "aComments" => $aComments,
@@ -333,8 +333,9 @@ class QuestionController implements ContainerInjectableInterface
         return $items;
     }
 
-    private function dateSort($a, $b) {
-        return strtotime($b->time) - strtotime($a->time);
+    private function dateSort($alpha, $bravo)
+    {
+        return strtotime($bravo->time) - strtotime($alpha->time);
     }
 
 
@@ -343,7 +344,7 @@ class QuestionController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function createAction() : object
+    public function createAction(): object
     {
         $page = $this->di->get("page");
 
@@ -370,7 +371,7 @@ class QuestionController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function deleteAction($id) : object
+    public function deleteAction($id): object
     {
         // Check if the item with $id belongs to the user with $uid.
         $uid = $this->di->session->get("user_id");
@@ -407,7 +408,7 @@ class QuestionController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function updateAction(int $id) : object
+    public function updateAction(int $id): object
     {
         // Check if the item with $id belongs to the user with $uid.
         $uid = $this->di->session->get("user_id");

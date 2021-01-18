@@ -46,7 +46,7 @@ class AnswerCommentController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function createAction($aid) : object
+    public function createAction($aid): object
     {
         if (!$this->di->session->get("user_id")) {
             return $this->di->response->redirect("user");
@@ -72,7 +72,7 @@ class AnswerCommentController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function deleteAction($id) : object
+    public function deleteAction($id): object
     {
         // Check if the item with $id belongs to the user with $uid.
         $uid = $this->di->session->get("user_id");
@@ -109,7 +109,7 @@ class AnswerCommentController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function updateAction(int $id) : object
+    public function updateAction(int $id): object
     {
         // Check if the item with $id belongs to the user with $uid.
         $uid = $this->di->session->get("user_id");

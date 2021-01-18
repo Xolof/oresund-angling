@@ -59,7 +59,7 @@ class UpdateForm extends FormModel
      *
      * @return UserProfile
      */
-    public function getItemDetails($id) : object
+    public function getItemDetails($id): object
     {
         $userProfile = new UserProfile();
         $userProfile->setDb($this->di->get("dbqb"));
@@ -75,7 +75,7 @@ class UpdateForm extends FormModel
      *
      * @return bool true if okey, false if something went wrong.
      */
-    public function callbackSubmit() : bool
+    public function callbackSubmit(): bool
     {
         // Check if the item with $id belongs to the user with $uid.
         if (!$this->isUsersItem(new UserProfile(), $this->itemId, $this->uid)) {

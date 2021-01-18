@@ -67,7 +67,7 @@ class UpdateForm extends FormModel
      *
      * @return Question
      */
-    public function getItemDetails($id) : object
+    public function getItemDetails($id): object
     {
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
@@ -83,7 +83,7 @@ class UpdateForm extends FormModel
      *
      * @return string
      */
-    public function getTags($id) : string
+    public function getTags($id): string
     {
         $tagToQuestion = new TagToQuestion();
         $tagToQuestion->setDb($this->di->get("dbqb"));
@@ -109,7 +109,7 @@ class UpdateForm extends FormModel
      *
      * @return bool true if okey, false if something went wrong.
      */
-    public function callbackSubmit() : bool
+    public function callbackSubmit(): bool
     {
         // Check if the item with $id belongs to the user with $uid.
         $uid = $this->di->session->get("user_id");
@@ -139,7 +139,19 @@ class UpdateForm extends FormModel
             $newTags[] = preg_replace("/[^A-Za-zÅÄÖØÆåäöøæ0-9]/", '', $trimmed);
         }
 
+        $this->addTags($newTags);
 
+        $this->removeOldTags($newTags);
+
+        return true;
+    }
+
+
+    /**
+    * Add the new tags
+    */
+    private function addTags($newTags)
+    {
         foreach ($newTags as $tagStr) {
             $tag = new Tag();
             $tag->setDb($this->di->get("dbqb"));
@@ -166,7 +178,15 @@ class UpdateForm extends FormModel
                 $newTTQ->save();
             }
         }
+    }
 
+
+    /**
+    * Remove tags if they are not in the form field.
+    *
+    */
+    private function removeOldTags($newTags)
+    {
         // Get the old tags.
         $tagToQuestion = new TagToQuestion();
         $tagToQuestion->setDb($this->di->get("dbqb"));
@@ -192,8 +212,6 @@ class UpdateForm extends FormModel
                 $tagToQuestion->delete();
             }
         }
-
-        return true;
     }
 
 

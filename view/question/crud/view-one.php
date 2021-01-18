@@ -1,10 +1,11 @@
 <?php
 
-namespace Anax\View;
-
 /**
  * View to display one question.
  */
+
+namespace Anax\View;
+
 // Show all incoming variables/functions
 //var_dump(get_defined_functions());
 // echo showEnvironment(get_defined_vars());
@@ -28,12 +29,12 @@ $activeUser = $this->di->session->get("user_id");
         <span class="time">
             <span><?= htmlentities($question->time) ?></span>
         </span>
-        <?php if ($question->updated): ?>
+        <?php if ($question->updated) : ?>
             <span class="updated">(Updated <?= $question->updated ?>)</span>
         <?php endif ?>
     </p>
     <p class="question-edit-delete-para">
-        <?php if($activeUser === $question->uid): ?>
+        <?php if ($activeUser === $question->uid) : ?>
             <a href="<?= url("question/update/$question->id") ?>"  class="edit-delete-link">Edit</a>
             <a href="<?= url("question/delete/$question->id") ?>"  class="edit-delete-link">Delete</a>
         <?php endif ?>
@@ -45,7 +46,7 @@ $activeUser = $this->di->session->get("user_id");
 </p>
 
 <div class="qComments">
-    <?php foreach($qComments as $qComment): ?>
+    <?php foreach ($qComments as $qComment) : ?>
         <div class="qComment">
             <p><?= $qComment->text ?></p>
             <p class="question-answer-comment-info">
@@ -58,11 +59,11 @@ $activeUser = $this->di->session->get("user_id");
                 <span class="time">
                     <span><?= htmlentities($qComment->time) ?></span>
                 </span>
-                <?php if ($qComment->updated): ?>
+                <?php if ($qComment->updated) : ?>
                     <span class="updated">(Updated <?= $qComment->updated ?>)</span>
                 <?php endif ?>
             </p>
-            <?php if($activeUser === $qComment->uid): ?>
+            <?php if ($activeUser === $qComment->uid) : ?>
                 <a href="<?= url("question-comment/update/$qComment->id") ?>"  class="edit-delete-link">Edit</a>
                 <a href="<?= url("question-comment/delete/$qComment->id") ?>"  class="edit-delete-link">Delete</a>
             <?php endif ?>
@@ -71,7 +72,7 @@ $activeUser = $this->di->session->get("user_id");
     <p><a href="<?= url("question-comment/create/$question->id") ?>" class="answer-comment-link">Add a comment</a></p>
 </div>
 
-<?php foreach($answers as $answer): ?>
+<?php foreach ($answers as $answer) : ?>
     <div class="answer">
         <p><?= $answer->text ?></p>
         <p class="question-answer-comment-info">
@@ -84,18 +85,18 @@ $activeUser = $this->di->session->get("user_id");
             <span class="time">
                 <span><?= htmlentities($answer->time) ?></span>
             </span>
-            <?php if ($answer->updated): ?>
+            <?php if ($answer->updated) : ?>
                 <span class="updated">(Updated <?= $answer->updated ?>)</span>
             <?php endif ?>
         </p>
-        <?php if($activeUser === $answer->uid): ?>
+        <?php if ($activeUser === $answer->uid) : ?>
             <a href="<?= url("answer/update/$answer->id") ?>"  class="edit-delete-link">Edit</a>
             <a href="<?= url("answer/delete/$answer->id") ?>"  class="edit-delete-link">Delete</a>
         <?php endif ?>
     </div>
 
     <div class="aComments">
-        <?php foreach($aComments["answer $answer->id"] as $aComment): ?>
+        <?php foreach ($aComments["answer $answer->id"] as $aComment) : ?>
             <div class="aComment">
                 <p><?= $aComment->text ?></p>
                 <p class="question-answer-comment-info">
@@ -110,11 +111,11 @@ $activeUser = $this->di->session->get("user_id");
                             <?= htmlentities($aComment->time) ?>
                         </span>
                     </span>
-                    <?php if ($aComment->updated): ?>
+                    <?php if ($aComment->updated) : ?>
                         <span class="updated">(Updated <?= $aComment->updated ?>)</span>
                     <?php endif ?>
                 </p>
-                <?php if($activeUser === $aComment->uid): ?>
+                <?php if ($activeUser === $aComment->uid) : ?>
                     <a href="<?= url("answer-comment/update/$aComment->id") ?>"  class="edit-delete-link">Edit</a>
                     <a href="<?= url("answer-comment/delete/$aComment->id") ?>"  class="edit-delete-link">Delete</a>
                 <?php endif ?>

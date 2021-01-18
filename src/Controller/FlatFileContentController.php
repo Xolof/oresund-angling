@@ -33,7 +33,7 @@ class FlatFileContentController implements ContainerInjectableInterface
 
         $file = is_file($file1) ? $file1 : null;
         $file = is_file($file2) ? $file2 : $file;
-        
+
         if (!$file) {
             return;
         }

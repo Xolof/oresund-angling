@@ -1,4 +1,5 @@
 <?php
+
 namespace Anax\View;
 
 $acronym = $data["acronym"];
@@ -13,12 +14,12 @@ $activeUser = $this->di->session->get("user_id");
 
 <p><?= $gravatar ?></p>
 
-<?php if($presentation): ?>
+<?php if ($presentation) : ?>
     <p><?= $presentation ?></p>
-<?php else: ?>
+<?php else : ?>
     <p>This user has not yet written a presentation.</p>
 <?php endif ?>
 
-<?php if ($activeUser === $uid): ?>
+<?php if ($activeUser === $uid) : ?>
     <a href="<?= url("user-profile/update/$activeUser") ?>">Update your profile</a>
 <?php endif ?>

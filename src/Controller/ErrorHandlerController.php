@@ -8,12 +8,11 @@ use Anax\Route\Exception\NotFoundException;
 
 /**
  * A controller to ease with development and debugging information.
+ * @SuppressWarnings(PHPMD)
  */
 class ErrorHandlerController implements ContainerInjectableInterface
 {
     use ContainerInjectableTrait;
-
-
 
     /**
      * Add internal routes for 403, 404 and 500 that provides a page with
@@ -25,7 +24,7 @@ class ErrorHandlerController implements ContainerInjectableInterface
 
      * @return object as the response.
      */
-    public function catchAll(...$args) : object
+    public function catchAll(...$args): object
     {
         $pages = [
             "403" => [

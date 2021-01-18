@@ -1,4 +1,5 @@
 <?php
+
 namespace Anax\View;
 
 $error = $this->di->session->getOnce("error") ?? null;

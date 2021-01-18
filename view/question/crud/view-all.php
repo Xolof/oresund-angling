@@ -1,10 +1,11 @@
 <?php
 
-namespace Anax\View;
-
 /**
  * View to display all books.
  */
+
+namespace Anax\View;
+
 // Show all incoming variables/functions
 //var_dump(get_defined_functions());
 //echo showEnvironment(get_defined_vars());
@@ -16,8 +17,8 @@ namespace Anax\View;
 
 <?php if (!$items) : ?>
     <p>There are no items to show.</p>
-<?php
-    return;
+    <?php
+        return;
 endif;
 ?>
 

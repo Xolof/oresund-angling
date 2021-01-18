@@ -57,7 +57,7 @@ class DeleteForm extends FormModel
      *
      * @return Question
      */
-    public function getItemDetails($id) : object
+    public function getItemDetails($id): object
     {
         $question = new Question();
         $question->setDb($this->di->get("dbqb"));
@@ -71,7 +71,7 @@ class DeleteForm extends FormModel
      *
      * @return bool true if okey, false if something went wrong.
      */
-    public function callbackSubmit() : bool
+    public function callbackSubmit(): bool
     {
         // Check if the item with $id belongs to the user with $uid.
         $uid = $this->di->session->get("user_id");

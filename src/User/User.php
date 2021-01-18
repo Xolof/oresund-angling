@@ -1,4 +1,5 @@
 <?php
+
 namespace Anax\User;
 
 use Anax\DatabaseActiveRecord\ActiveRecordModel;

@@ -23,7 +23,6 @@ class CreateForm extends FormModel
         $this->id = null;
         parent::__construct($di);
         $this->form->create(
-
             [
                 "id" => __CLASS__,
                 // "legend" => "Details of the item",
@@ -56,7 +55,7 @@ class CreateForm extends FormModel
      *
      * @return bool true if okey, false if something went wrong.
      */
-    public function callbackSubmit() : bool
+    public function callbackSubmit(): bool
     {
         $uid = $this->di->session->get("user_id");
 

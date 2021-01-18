@@ -59,7 +59,7 @@ class UpdateForm extends FormModel
      *
      * @return Answer
      */
-    public function getItemDetails($id) : object
+    public function getItemDetails($id): object
     {
         $answer = new Answer();
         $answer->setDb($this->di->get("dbqb"));
@@ -75,7 +75,7 @@ class UpdateForm extends FormModel
      *
      * @return bool true if okey, false if something went wrong.
      */
-    public function callbackSubmit() : bool
+    public function callbackSubmit(): bool
     {
         // Check if the item with $id belongs to the user with $uid.
         $uid = $this->di->session->get("user_id");

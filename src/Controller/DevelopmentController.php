@@ -26,7 +26,7 @@ class DevelopmentController implements ContainerInjectableInterface
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function catchAll(...$args) : object
+    public function catchAll(...$args): object
     {
         $pages = [
             "" => "index",

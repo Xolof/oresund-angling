@@ -1,4 +1,5 @@
 <?php
+
 namespace Anax\View;
 
 $activeUser = $this->di->session->get("user_id");
@@ -10,7 +11,7 @@ $activeUser = $this->di->session->get("user_id");
     <a href="logout">Logout</a>
         | <a href="user/show/<?= $activeUser ?>">Show your profile</a>
         | <a href="<?= url("user-profile/update/$activeUser") ?>">Update your profile</a>
-<?php else: ?>
+<?php else : ?>
     <a href="user/login">Login</a>
     | <a href="user/create">Sign up</a>
 <?php endif ?>

@@ -36,7 +36,7 @@ class SampleJsonController implements ContainerInjectableInterface
      *
      * @return void
      */
-    public function initialize() : void
+    public function initialize(): void
     {
         // Use to initialise member variables.
         $this->db = "active";
@@ -52,7 +52,7 @@ class SampleJsonController implements ContainerInjectableInterface
      *
      * @return array
      */
-    public function indexActionGet() : array
+    public function indexActionGet(): array
     {
         // Deal with the action and return a response.
         $json = [
@@ -69,7 +69,7 @@ class SampleJsonController implements ContainerInjectableInterface
      *
      * @return array
      */
-    public function dumpDiActionGet() : array
+    public function dumpDiActionGet(): array
     {
         // Deal with the action and return a response.
         $services = implode(", ", $this->di->getServices());
@@ -88,7 +88,7 @@ class SampleJsonController implements ContainerInjectableInterface
      *
      * @return array
      */
-    public function forbiddenAction() : array
+    public function forbiddenAction(): array
     {
         // Deal with the action and return a response.
         $json = [

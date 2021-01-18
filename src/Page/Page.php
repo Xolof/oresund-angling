@@ -1,13 +1,14 @@
 <?php
 
+/**
+ * To ease rendering a page consisting of several views.
+ */
+
 namespace Anax\Page;
 
 use Anax\Commons\ContainerInjectableInterface;
 use Anax\Commons\ContainerInjectableTrait;
 
-/**
- * To ease rendering a page consisting of several views.
- */
 class Page implements ContainerInjectableInterface
 {
     use ContainerInjectableTrait;
@@ -28,7 +29,7 @@ class Page implements ContainerInjectableInterface
      *
      * @return $this
      */
-    public function addLayout(array $view) : object
+    public function addLayout(array $view): object
     {
         $this->layout = $view;
         return $this;
@@ -55,7 +56,7 @@ class Page implements ContainerInjectableInterface
         array $data = [],
         string $region = "main",
         int $sort = 0
-    ) : object {
+    ): object {
         $this->di->get("view")->add($template, $data, $region, $sort);
         return $this;
     }

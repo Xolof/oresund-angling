@@ -28,8 +28,8 @@ class CreateUserForm extends FormModel
             [
                 "acronym" => [
                     "type"        => "text",
-                    "validation"  => ["not_empty"],
                     "validation" => [
+                        "not_empty",
                         "custom_test" => [
                             "message" => "That username already exists.",
                             "test" => function ($acronym) {
@@ -68,20 +68,20 @@ class CreateUserForm extends FormModel
 
 
     /**
-     * Callback for submit-button which should return true if it could
-     * carry out its work and false if something failed.
-     *
-     * @return boolean true if okey, false if something went wrong.
-     */
-     public function callbackSubmit()
-     {
+    * Callback for submit-button which should return true if it could
+    * carry out its work and false if something failed.
+    *
+    * @return boolean true if okey, false if something went wrong.
+    */
+    public function callbackSubmit()
+    {
         // Get values from the submitted form
         $acronym       = $this->form->value("acronym");
         $password      = $this->form->value("password");
         $passwordAgain = $this->form->value("password-again");
 
         // Check password matches
-        if ($password !== $passwordAgain ) {
+        if ($password !== $passwordAgain) {
             $this->form->rememberValues();
             $this->form->addOutput("Password did not match.");
             return false;
@@ -104,7 +104,7 @@ class CreateUserForm extends FormModel
 
         $this->form->addOutput("User was created.");
         return true;
-     }
+    }
 
      /**
      * Get either a Gravatar URL or complete image tag for a specified email address.

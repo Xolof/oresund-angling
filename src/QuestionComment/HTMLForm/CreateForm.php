@@ -49,7 +49,7 @@ class CreateForm extends FormModel
      *
      * @return bool true if okey, false if something went wrong.
      */
-    public function callbackSubmit() : bool
+    public function callbackSubmit(): bool
     {
         if (!$this->di->session->get("user_id")) {
             return false;

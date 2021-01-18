@@ -1,10 +1,10 @@
 <?php
 
-namespace Anax\View;
-
 /**
  * View for index.
  */
+
+namespace Anax\View;
 
 ?>
 <h1>Welcome to Öresund fishing!</h1>
@@ -14,7 +14,7 @@ namespace Anax\View;
 <div class="index-questions">
     <?php if (!$questions) : ?>
         <p>There are no questions to show.</p>
-    <?php else: ?>
+    <?php else : ?>
         <?php foreach ($questions as $question) : ?>
         <div class="view-all-question">
             <p><?= $question->text ?></p>
@@ -34,8 +34,8 @@ namespace Anax\View;
     <h5>Most popular tags</h5>
     <?php if (!$mostPopularTags) : ?>
         <p>There are not yet any tags.</p>
-    <?php else: ?>
-        <?php foreach ($mostPopularTags as $tag): ?>
+    <?php else : ?>
+        <?php foreach ($mostPopularTags as $tag) : ?>
             <a class="index-taglink" href=<?= url("question/tag/" . htmlentities($tag["tag"])) ?>>
                 <?= htmlentities($tag["tag"]) ?>
             </a>
@@ -47,8 +47,8 @@ namespace Anax\View;
     <h5>Most active users</h5>
     <?php if (!$mostActiveUsers) : ?>
         <p>There are not yet any users.</p>
-    <?php else: ?>
-        <?php foreach ($mostActiveUsers as $user): ?>
+    <?php else : ?>
+        <?php foreach ($mostActiveUsers as $user) : ?>
             <a class="index-userlink" href="<?= url("user/show/" . $user["id"]) ?>">
                 <?= htmlentities($user["acronym"]) ?>
             </a>

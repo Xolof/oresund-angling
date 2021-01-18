@@ -1,11 +1,15 @@
 <?php
-namespace Xolof\Item;
 
 /**
 * Check if this item belongs to the current user.
 */
-trait Item {
-    private function isUsersItem($item, $itemId, $userId) {
+
+namespace Xolof\Item;
+
+trait Item
+{
+    private function isUsersItem($item, $itemId, $userId)
+    {
         $item->setDb($this->di->get("dbqb"));
         $usersItem = $item->find("id", $itemId);
 

@@ -1,4 +1,4 @@
-USE qadb;
+-- USE qadb;
 
 -- Ensure UTF8 on the database connection
 SET NAMES utf8mb4;

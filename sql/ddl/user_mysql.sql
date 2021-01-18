@@ -8,9 +8,9 @@
 --
 -- Create a database for test
 --
--- DROP DATABASE anaxdb;
-CREATE DATABASE IF NOT EXISTS qadb;
-USE qadb;
+-- DROP DATABASE qadb;
+-- CREATE DATABASE IF NOT EXISTS qadb;
+-- USE qadb;
 
 
 --

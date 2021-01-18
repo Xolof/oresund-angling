@@ -10,4 +10,11 @@ A forum for asking questions. This is a project from the course ramverk1 at Blek
 
 ## How to install
 
-Info about installing will be added.
+### Database
+
+In your Mysql or MariaDb client enter:
+`CREATE DATABASE IF NOT EXISTS qadb;
+USE qadb;`
+
+Run the bash script creating tables.
+``

@@ -1,6 +1,5 @@
 /.bin
 /build
-/cache
 /vendor
 memory::
 composer.lock

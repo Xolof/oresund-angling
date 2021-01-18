@@ -14,19 +14,9 @@
         "anax/anax-ramverk1-me": "^1.0.0",
         "anax/htmlform": "^2.0",
         "anax/database-active-record": "^2.0",
-        "michelf/php-markdown": "^1.9.0",
-        "anax/commons": "^2.0.14"
+        "michelf/php-markdown": "^1.9.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7",
-        "anax/di": "^2.0.0@alpha",
-        "anax/response": "^2.0.0@alpha",
-        "anax/request": "^2.0.0@alpha",
-        "anax/view": "^2.0.0@alpha",
-        "anax/cache": "^2.0.0@alpha",
-        "anax/configure": "^2.0.0@alpha",
-        "anax/page": "^2.0.0@alpha",
-        "anax/url": "^2.0.0@alpha",
-        "anax/anax": "^2.0.17"
+        "phpunit/phpunit": "^7"
     }
 }

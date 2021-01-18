@@ -5,3 +5,4 @@ memory::
 composer.lock
 .phpunit.result.cache
 /config/database.php
+/sql/ddl/reset_db.bash

@@ -1,6 +1,6 @@
 {
-    "name" : "anax/noname",
-    "description": "A me page for the ramverk1 course.",
+    "name" : "anax/oresund-angling",
+    "description": "A project for the curse ramverk1.",
     "license": "MIT",
     "minimum-stability": "beta",
     "prefer-stable": true,

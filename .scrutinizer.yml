@@ -1,9 +1,9 @@
 build:
   nodes:
-    - command: make install
     coverage:
       tests:
         override:
+          - command: make install
           - command: make test
             coverage:
               file: build/coverage.clover   # <- Set this to where we find the coverage data.

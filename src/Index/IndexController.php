@@ -76,10 +76,10 @@ class IndexController implements ContainerInjectableInterface
         }
 
         // Get the most active users.
-        $mostActiveUsers = $this->getMostActiveUsers();
+        $mostActiveUsers = $this->getMostActiveUsers(5);
 
         // Get the most popular tags.
-        $tags = $this->getMostPopularTags();
+        $tags = $this->getMostPopularTags(10);
 
         $page->add("home/home", [
             "questions" => array_slice($notDeletedQuestions, 0, 3),
@@ -98,7 +98,7 @@ class IndexController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function aboutActionGet()//: object
+    public function aboutActionGet(): object
     {
         $page = $this->di->get("page");
 
@@ -106,8 +106,50 @@ class IndexController implements ContainerInjectableInterface
 
         return $page->render([
             "title" => "About",
-        ]);    }
+        ]);
+    }
 
+
+    /**
+     * Show all tags.
+     *
+     * @return object as a response object
+     */
+    public function tagsActionGet(): object
+    {
+        $page = $this->di->get("page");
+
+        $tags = $this->getMostPopularTags();
+
+        $page->add("tag/tags", [
+            "tags" => $tags
+        ]);
+
+        return $page->render([
+            "title" => "Tags",
+        ]);
+    }
+
+
+    /**
+     * Show all users.
+     *
+     * @return object as a response object
+     */
+    public function usersActionGet(): object
+    {
+        $page = $this->di->get("page");
+
+        $users = $this->getMostActiveUsers();
+
+        $page->add("user/users", [
+            "users" => $users
+        ]);
+
+        return $page->render([
+            "title" => "Users",
+        ]);
+    }
 
 
     /**
@@ -115,12 +157,12 @@ class IndexController implements ContainerInjectableInterface
     *
     * @return $mostActiveUsers, an array of objects with most active users.
     */
-    private function getMostActiveUsers()
+    private function getMostActiveUsers($limit = null)
     {
-        // För varje användare,
-        // Hämta alla inlägg med den användarens id.
-        // Tilldela poäng.
-        // Visa de mest aktiva.
+        // For every user,
+        // Get all posts with that user's id.
+        // Assign score.
+        // Return the most active users.
         $user = new User();
         $user->setDb($this->di->get("dbqb"));
         $users = $user->findAll();
@@ -158,6 +200,8 @@ class IndexController implements ContainerInjectableInterface
             $usersActivity[] = [
                 "id" => $user->id,
                 "acronym" => $user->acronym,
+                "gravatar" => $user->gravatar,
+                "registered" => $user->time,
                 "score" => $score
             ];
         }
@@ -165,7 +209,11 @@ class IndexController implements ContainerInjectableInterface
         // Order by time, show newest first.
         usort($usersActivity, array($this, "sortByUserScore"));
 
-        return array_slice($usersActivity, 0, 5);
+        if ($limit) {
+            return array_slice($usersActivity, 0, $limit);
+        }
+
+        return $usersActivity;
     }
 
 
@@ -180,7 +228,7 @@ class IndexController implements ContainerInjectableInterface
     *
     * @return $tags, an array of objects with most popular tags.
     */
-    private function getMostPopularTags()
+    private function getMostPopularTags($limit = null)
     {
         // Hämta alla taggar.
         $tag = new Tag();
@@ -204,7 +252,11 @@ class IndexController implements ContainerInjectableInterface
 
         usort($tagsWithNumRows, array($this, "numRowsSort"));
 
-        return array_slice($tagsWithNumRows, 0, 10);
+        if ($limit) {
+            return array_slice($tagsWithNumRows, 0, $limit);
+        }
+
+        return $tagsWithNumRows;
     }
 
     private function numRowsSort($alpha, $bravo)
@@ -256,5 +308,27 @@ class IndexController implements ContainerInjectableInterface
     private function dateSort($alpha, $bravo)
     {
         return strtotime($bravo->time) - strtotime($alpha->time);
+    }
+
+
+    /**
+     * Adding an optional catchAll() method will catch all actions sent to the
+     * router. You can then reply with an actual response or return void to
+     * allow for the router to move on to next handler.
+     * A catchAll() handles the following, if a specific action method is not
+     * created:
+     * ANY METHOD mountpoint/**
+     *
+     * @param array $args as a variadic parameter.
+     *
+     * @return mixed
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function catchAll(...$args)
+    {
+        // Deal with the request and send an actual response, or not.
+        //return __METHOD__ . ", \$db is {$this->db}, got '" . count($args) . "' arguments: " . implode(", ", $args);
+        return;
     }
 }

@@ -349,7 +349,7 @@ class QuestionController implements ContainerInjectableInterface
         $page = $this->di->get("page");
 
         if (!$this->di->session->get("user_id")) {
-            return $this->di->response->redirect("user");
+            return $this->di->response->redirect("user/register");
         };
 
         $form = new CreateForm($this->di);

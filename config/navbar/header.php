@@ -22,14 +22,24 @@ $navbar = [
             "title" => "Questions",
         ],
         [
+            "text" => "Tags",
+            "url" => "tags",
+            "title" => "Tags",
+        ],
+        [
             "text" => "Ask",
             "url" => "question/create",
             "title" => "Ask",
         ],
         [
-            "text" => "User",
-            "url" => "user",
-            "title" => "User",
+            "text" => "Users",
+            "url" => "users",
+            "title" => "Users",
+        ],
+        [
+            "text" => "Register",
+            "url" => "user/register",
+            "title" => "Register",
         ],
         [
             "text" => "About",
@@ -38,5 +48,18 @@ $navbar = [
         ],
     ],
 ];
+
+$activeUser = $_SESSION["user_id"] ?? null;
+
+$myProfile = [
+    "text" => "My profile",
+    "url" => "user/show/$activeUser",
+    "title" => "User",
+];
+
+if ($activeUser) {
+    array_splice($navbar["items"], 5, 0, [$myProfile]);
+}
+
 
 return $navbar;

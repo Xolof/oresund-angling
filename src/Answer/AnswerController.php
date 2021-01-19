@@ -50,7 +50,7 @@ class AnswerController implements ContainerInjectableInterface
     public function createAction($qid): object
     {
         if (!$this->di->session->get("user_id")) {
-            return $this->di->response->redirect("user");
+            return $this->di->response->redirect("user/register");
         };
 
         $question = new Question();

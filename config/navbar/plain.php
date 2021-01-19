@@ -13,27 +13,32 @@ return [
         [
             "text" => "Home",
             "url" => "",
-            "title" => "Home.",
+            "title" => "Home",
         ],
         [
             "text" => "Questions",
             "url" => "question",
-            "title" => "Questions.",
+            "title" => "Questions",
+        ],
+        [
+            "text" => "Tags",
+            "url" => "tags",
+            "title" => "Tags",
         ],
         [
             "text" => "Ask",
             "url" => "question/create",
-            "title" => "Ask.",
+            "title" => "Ask",
         ],
         [
             "text" => "User",
             "url" => "user",
-            "title" => "User.",
+            "title" => "User",
         ],
         [
             "text" => "About",
             "url" => "about",
-            "title" => "About page.",
+            "title" => "About page",
         ],
     ],
 ];

@@ -7101,6 +7101,20 @@ textarea#form-element-text {
   position: relative;
   top: 10px;
 }
+.userlist-user {
+  max-width: 400px;
+  border-bottom: 1px solid #ccc;
+  padding-top: 0.6em;
+}
+.userlist-user img {
+  float: right;
+}
+.userlist-user:nth-child(1) {
+  padding-top: 0;
+}
+body {
+  font-family: arial;
+}
 @media (min-width: 1350px) {
   .site-logo {
     position: absolute;

@@ -49,7 +49,7 @@ class AnswerCommentController implements ContainerInjectableInterface
     public function createAction($aid): object
     {
         if (!$this->di->session->get("user_id")) {
-            return $this->di->response->redirect("user");
+            return $this->di->response->redirect("user/register");
         };
 
         $page = $this->di->get("page");

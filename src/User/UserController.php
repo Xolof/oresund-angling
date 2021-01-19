@@ -53,11 +53,11 @@ class UserController implements ContainerInjectableInterface
      *
      * @return object as a response object
      */
-    public function indexActionGet(): object
+    public function registerActionGet(): object
     {
         $page = $this->di->get("page");
 
-        $page->add("user/user");
+        $page->add("user/register");
 
         return $page->render([
             "title" => "User",
@@ -80,7 +80,7 @@ class UserController implements ContainerInjectableInterface
         $activeUser = $this->di->session->get("user_id");
 
         if ($activeUser) {
-            return $this->di->response->redirect("user");
+            return $this->di->response->redirect("user/register");
         }
 
         $page = $this->di->get("page");
@@ -113,7 +113,7 @@ class UserController implements ContainerInjectableInterface
 
         if ($activeUser) {
             $this->di->session->set("error", ["You need to log out before you can create a user."]);
-            return $this->di->response->redirect("user");
+            return $this->di->response->redirect("user/register");
         }
 
         $page = $this->di->get("page");

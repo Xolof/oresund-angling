@@ -22,7 +22,16 @@ Install dependencies with composer.
 
 `composer install`
 
+Change the file permissions for the cache.
+
+`chmod -R 777 cache/*`
+
+In `htdocs/.htaccess`, replace `kmom10` with `oresund-angling`.
+Replace `oljh19` with your own acronym.
+
 ### Database
+
+#### Setup the SQL
 
 Enter your mysql client
 
@@ -51,3 +60,9 @@ Read the sql-files to create tables.
 `source sql/ddl/tag_mysql.sql;`
 
 `source sql/ddl/tag-to-question_mysql.sql;`
+
+#### Edit config file
+
+`cp config/database_sample.php config/database.php`
+
+Edit `config/database.php` with your details.

@@ -7053,7 +7053,8 @@ table .book-link:hover {
   text-align: center;
   color: red;
 }
-.logged_in {
+.logout,
+.login {
   text-align: center;
 }
 .gravatar-view-one {

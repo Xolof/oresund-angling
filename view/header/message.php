@@ -6,14 +6,18 @@ $error = $this->di->session->getOnce("error") ?? null;
 $message = $this->di->session->getOnce("message") ?? null;
 
 $activeUser = $this->di->session->get("user_id");
+
 ?>
 
 <?php if ($activeUser) : ?>
-<p class="logged_in">
-    <a href="<?= url('logout')?>">Log out</a>
-</p>
+    <p class="logout">
+        <a href="logout">Logout</a>
+    </p>
+<?php else : ?>
+    <p class="login">
+        <a href="user/login">Login</a>
+    </p>
 <?php endif ?>
-
 
 <?php if ($error && count($error) > 0) : ?>
     <?php foreach ($error as $err) : ?>

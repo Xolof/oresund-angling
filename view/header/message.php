@@ -11,11 +11,11 @@ $activeUser = $this->di->session->get("user_id");
 
 <?php if ($activeUser) : ?>
     <p class="logout">
-        <a href="logout">Logout</a>
+        <a href="<?= url("logout") ?>">Logout</a>
     </p>
 <?php else : ?>
     <p class="login">
-        <a href="user/login">Login</a>
+        <a href="<?= url("user/login") ?>">Login</a>
     </p>
 <?php endif ?>
 

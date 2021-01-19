@@ -65,4 +65,4 @@ Read the sql-files to create tables.
 
 `cp config/database_sample.php config/database.php`
 
-Edit `config/database.php` with your details.
+Edit `config/database.php` with your details. Change to the correct database name, user name and password.

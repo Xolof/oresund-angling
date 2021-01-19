@@ -1,3 +1,3 @@
-#### Footer col 2
+#### The site's repo on GitHub
 
-Med brödtext i ett stycke som säger något trevligt om just detta block, eller kanske en lista av länkar.
+Have a look at the [GitHub repository](https://github.com/Xolof/oresund-angling)

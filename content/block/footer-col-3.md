@@ -1,3 +1,3 @@
-#### Footer col 3
+#### How this site was made
 
-Med brödtext i ett stycke som säger något trevligt om just detta block, eller kanske en lista av länkar.
+This site was created with the PHP-framework Anax, using MVC design patterns, database abstraction layers and SQL.

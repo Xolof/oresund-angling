@@ -32,5 +32,10 @@ return [
             "url" => "user",
             "title" => "User.",
         ],
+        [
+            "text" => "About",
+            "url" => "about",
+            "title" => "About page.",
+        ],
     ],
 ];

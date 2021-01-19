@@ -1,1 +1,1 @@
-Copyright år och ditt namn samt diverse länkar som du finner relevanta.
+Made by Olof Johansson 2021 for the course ramverk1

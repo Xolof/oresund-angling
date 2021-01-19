@@ -1,3 +1,3 @@
-#### Footer col 1
+#### Ask about fishing in Öresund
 
-Med brödtext i ett stycke som säger något trevligt om just detta block, eller kanske en lista av länkar.
+This is a forum about all kinds of angling in Øresund.

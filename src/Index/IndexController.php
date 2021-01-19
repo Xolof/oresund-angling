@@ -94,6 +94,23 @@ class IndexController implements ContainerInjectableInterface
 
 
     /**
+     * Show the about page.
+     *
+     * @return object as a response object
+     */
+    public function aboutActionGet()//: object
+    {
+        $page = $this->di->get("page");
+
+        $page->add("about/about");
+
+        return $page->render([
+            "title" => "About",
+        ]);    }
+
+
+
+    /**
     * Get the most active users.
     *
     * @return $mostActiveUsers, an array of objects with most active users.

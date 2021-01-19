@@ -15,6 +15,7 @@ namespace Anax\View;
     <?php if (!$questions) : ?>
         <p>There are no questions to show.</p>
     <?php else : ?>
+        <h3>Latest questions</h3>
         <?php foreach ($questions as $question) : ?>
         <div class="view-all-question">
             <p><?= $question->text ?></p>

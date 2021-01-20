@@ -19,3 +19,8 @@ namespace Anax\View;
 ?><h1>Update a comment</h1>
 
 <?= $form ?>
+
+<script>
+const textForm = document.getElementById("form-element-text");
+textForm.required = true;
+</script>

@@ -7112,8 +7112,20 @@ textarea#form-element-text {
 .userlist-user:nth-child(1) {
   padding-top: 0;
 }
-body {
-  font-family: arial;
+.users-question {
+  border-bottom: 1px solid #ccc;
+}
+.users-question .read-more {
+  margin-left: 0.6em;
+}
+.users-presentation {
+  border-bottom: 1px solid #ccc;
+}
+.answered {
+  color: green;
+}
+.not-answered {
+  color: #5b5b5b;
 }
 @media (min-width: 1350px) {
   .site-logo {

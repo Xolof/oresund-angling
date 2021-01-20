@@ -1,8 +1,8 @@
 # oresund-angling
 
 [![Xolof](https://circleci.com/gh/Xolof/oresund-angling.svg?style=svg)](https://app.circleci.com/pipelines/github/Xolof/oresund-angling)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/Xolof/oresund-angling/badges/code-intelligence.svg?b=main)](https://scrutinizer-ci.com/code-intelligence)
-[![Code Intelligence Status](https://scrutinizer-ci.com/g/Xolof/oresund-angling/badges/code-intelligence.svg?b=main)](https://scrutinizer-ci.com/code-intelligence)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Xolof/oresund-angling/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/Xolof/oresund-angling/?branch=main)
+[![Code Coverage](https://scrutinizer-ci.com/g/Xolof/oresund-angling/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/Xolof/oresund-angling/?branch=main)
 [![Build Status](https://scrutinizer-ci.com/g/Xolof/oresund-angling/badges/build.png?b=main)](https://scrutinizer-ci.com/g/Xolof/oresund-angling/build-status/main)
 [![Code Intelligence Status](https://scrutinizer-ci.com/g/Xolof/oresund-angling/badges/code-intelligence.svg?b=main)](https://scrutinizer-ci.com/code-intelligence)
 

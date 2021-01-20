@@ -21,3 +21,8 @@ $urlToView = url("answer");
 ?><h1>Update an answer</h1>
 
 <?= $form ?>
+
+<script>
+const textForm = document.getElementById("form-element-text");
+textForm.required = true;
+</script>

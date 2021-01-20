@@ -19,3 +19,9 @@ $urlToView = url("question");
 ?><h1>Update a question</h1>
 
 <?= $form ?>
+
+
+<script>
+const textForm = document.getElementById("form-element-text");
+textForm.required = true;
+</script>

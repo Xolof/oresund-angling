@@ -10,6 +10,8 @@ use Xolof\User\HTMLForm\UserForm;
 use Xolof\User\HTMLForm\UpdateForm;
 use Xolof\UserProfile\UserProfile;
 use Anax\User\User;
+use Xolof\Question\Question;
+use Xolof\Answer\Answer;
 use Michelf\Markdown;
 
 // use Anax\Route\Exception\ForbiddenException;
@@ -155,6 +157,8 @@ class UserController implements ContainerInjectableInterface
             ]);
         }
 
+        $usersQuestions = $this->getUsersQuestions($id);
+
         $userProfile = new UserProfile();
         $userProfile->setDb($this->di->get("dbqb"));
         $userProfile->find("id", $id);
@@ -163,16 +167,47 @@ class UserController implements ContainerInjectableInterface
 
         $page->add("user/show-one", [
             "data" => [
-                "uid"       => $user->id,
+                "uid"           => $user->id,
                 "acronym"       => $user->acronym,
                 "presentation"  => $presentation,
-                "gravatar"      => $user->gravatar
+                "gravatar"      => $user->gravatar,
+                "questions"     => $usersQuestions
             ]
         ]);
 
         return $page->render([
             "title" => "User $user->acronym",
         ]);
+    }
+
+
+    /**
+    * Get the user's questions
+    *
+    * @return array $questionsInfo. The user's questions and info
+    * about wether they've been answered or not.
+    */
+    private function getUsersQuestions($userId)
+    {
+        $questionsInfo = [];
+
+        $question = new Question();
+        $question->setDb($this->di->get("dbqb"));
+        $questions = $question->findAllWhere("uid = ?", $userId);
+
+        foreach ($questions as $question) {
+            $answer = new Answer();
+            $answer->setDb($this->di->get("dbqb"));
+            $hasAnswer = $answer->find("qid", $question->id)->id ? true : false;
+
+            $questionsInfo[] = [
+                "id" => $question->id,
+                "text" => $question->text,
+                "answered" => $hasAnswer
+            ];
+        }
+
+        return $questionsInfo;
     }
 
 

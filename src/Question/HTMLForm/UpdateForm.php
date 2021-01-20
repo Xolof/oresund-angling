@@ -129,6 +129,7 @@ class UpdateForm extends FormModel
 
         // Get the tags as comma separated values from the form.
         $rawNewTags = explode(",", $this->form->rawValue("tags"));
+
         $newTags = [];
 
         foreach ($rawNewTags as $tagStr) {

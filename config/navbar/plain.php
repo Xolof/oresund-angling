@@ -4,7 +4,7 @@
  * Supply the basis for the navbar as an array.
  */
 
-return [
+$navbar = [
     // Use for styling the menu
     "class" => "my-navbar",
 
@@ -31,9 +31,14 @@ return [
             "title" => "Ask",
         ],
         [
-            "text" => "User",
-            "url" => "user",
-            "title" => "User",
+            "text" => "Users",
+            "url" => "users",
+            "title" => "Users",
+        ],
+        [
+            "text" => "Register",
+            "url" => "user/register",
+            "title" => "Register",
         ],
         [
             "text" => "About",
@@ -42,3 +47,17 @@ return [
         ],
     ],
 ];
+
+$activeUser = $_SESSION["user_id"] ?? null;
+
+$myProfile = [
+    "text" => "My profile",
+    "url" => "user/show/$activeUser",
+    "title" => "User",
+];
+
+if ($activeUser) {
+    array_splice($navbar["items"], 5, 0, [$myProfile]);
+}
+
+return $navbar;

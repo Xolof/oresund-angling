@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Config file for Database.
  *
@@ -12,7 +13,6 @@
  *  "dsn" => "sqlite:memory::",
  *
  */
-
 
 //  Config for student server.
 if ($_SERVER["SERVER_NAME"] === "www.student.bth.se") {

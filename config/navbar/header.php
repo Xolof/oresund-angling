@@ -61,5 +61,4 @@ if ($activeUser) {
     array_splice($navbar["items"], 5, 0, [$myProfile]);
 }
 
-
 return $navbar;

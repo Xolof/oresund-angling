@@ -202,7 +202,7 @@ class UserController implements ContainerInjectableInterface
 
             $questionsInfo[] = [
                 "id" => $question->id,
-                "text" => $question->text,
+                "text" => $this->markdown($question->text),
                 "answered" => $hasAnswer
             ];
         }

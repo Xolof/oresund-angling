@@ -32,7 +32,7 @@ $activeUser = $this->di->session->get("user_id");
 
     <?php foreach ($questions as $question) : ?>
         <div class="users-question">
-            <p><?= htmlentities($question["text"]) ?></p>
+            <p><?= $question["text"] ?></p>
             <?php if ($question["answered"]) : ?>
                 <p class="answered">Answered <a class="read-more" href="<?= url("question/show/{$question["id"]}") ?>">Read more</a></p>
             <?php else : ?>
